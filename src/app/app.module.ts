@@ -3,6 +3,17 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from '@environments/environment';
+import { CoreModule } from '@wl-core/core.module';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
+import { NgxsModule } from '@ngxs/store';
+import { SharedModule } from '@wl-shared/shared.module';
+
 
 @NgModule({
   declarations: [
@@ -10,7 +21,16 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    CoreModule,
+    SharedModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    NgxsModule, // initial states
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthGuardModule,
+    AngularFireAuthModule,
+    AngularFirestore,
   ],
   providers: [],
   bootstrap: [AppComponent]

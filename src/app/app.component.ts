@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'WanderLead';
+
+  constructor( private updates: SwUpdate) {
+    updates.available.subscribe(() => updates.activateUpdate().then(() => window.location.reload()));
+  }
+
+
+
+  @HostListener('window:beforeunload')
+  onCloseTab() {
+    if (window.performance.navigation.TYPE_RELOAD)
+      localStorage.setItem('last_close', Date.now().toString());
+  }
 }

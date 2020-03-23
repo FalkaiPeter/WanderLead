@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "wanderlead-fcd29": {
+      "hosting": {
+        "WanderLead": [
+          "wanderlead-fcd29"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "wanderlead-fcd29"
+  }
+}
