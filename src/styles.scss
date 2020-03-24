@@ -9,11 +9,45 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
+$wl-primary-palette:  (
+    50 : #e7eaed,
+    100 : #c3cad3,
+    200 : #9ba7b5,
+    300 : #728497,
+    400 : #546981,
+    500 : #364f6b,
+    600 : #304863,
+    700 : #293f58,
+    800 : #22364e,
+    900 : #16263c,
+    A100 : #7bafff,
+    A200 : #4890ff,
+    A400 : #1571ff,
+    A700 : #0063fb,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$WanderLead-primary: mat-palette($mat-indigo);
-$WanderLead-accent: mat-palette($mat-pink, A200, A100, A400);
+$WanderLead-primary: mat-palette($wl-primary-palette);
+$WanderLead-accent: mat-palette($mat-light-blue, 300);
 
 // The warn palette is optional (defaults to red).
 $WanderLead-warn: mat-palette($mat-red);
@@ -26,7 +60,8 @@ $WanderLead-theme: mat-light-theme($WanderLead-primary, $WanderLead-accent, $Wan
 // that you are using.
 @include angular-material-theme($WanderLead-theme);
 
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #E5E5E5;}

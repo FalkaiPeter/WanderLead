@@ -6,15 +6,17 @@ admin.initializeApp();
 const env = functions.config();
 const client = algolia.default(env.algolia.appid, env.algolia.apikey);
 const index = client.initIndex('Users');
-
+const basicPhotoURL = 'https://firebasestorage.googleapis.com/v0/b/wanderlead-fcd29.appspot.com/o/blank-profile-picture.svg?alt=media&token=ef42ff39-cbf8-4cf8-8b3a-6c45fbc0a2a2';
 
 exports.initUserInFirestore = functions.auth.user().onCreate( (user, context) => {
-  const userData = { uid: user.uid, photoURL: user.photoURL};
+  const userData = { uid: user.uid, photoURL: basicPhotoURL};
   return admin.firestore()
   .doc(`Users/${user.uid}`)
   .set(
-    user.uid === null ?
-    {userData} :
+    /* if user sign up wia register form, they have no initial displayname on authentication
+    if user have no displayName then insert only id and photoURL, cus name wil setted wia authentication service */
+    user.displayName === null ?
+    userData :
     {...userData, displayName: user.displayName}, {merge: true} );
 } );
 

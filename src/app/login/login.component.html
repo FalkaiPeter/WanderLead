@@ -1,0 +1,68 @@
+<div class="container">
+
+
+  <!-- TITLE -->
+  <span class="title">SIGN IN</span>
+
+  <form #l="ngForm" (ngSubmit)="authservice.signIn(l)" class="login-form">
+
+
+    <!-- EMAIL -->
+    <mat-form-field >
+      <mat-label>Email</mat-label>
+      <input matInput name="email" ngModel [formControl]="loginFormControl" [errorStateMatcher]="matcher" placeholder="user@example.com">
+      <!-- ERROR HANDLER NOT VALID INPUT-->
+      <mat-error *ngIf="loginFormControl.hasError('email') && !loginFormControl.hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+      <!-- ERROR HANDLER REQUIRED -->
+      <mat-error *ngIf="loginFormControl.hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- PASSWORD -->
+    <mat-form-field >
+      <mat-label>Password</mat-label>
+      <input matInput [formControl]="loginFormControl" [errorStateMatcher]="matcher" type="password" placeholder="password">
+      <!-- ERROR HANDLER TOO SHORT PASSWORD -->
+      <mat-error *ngIf="loginFormControl.hasError('minLength') && !loginFormControl.hasError('required')">
+        Password must at least 6 character
+      </mat-error>
+      <!-- ERROR HANDLER REQUIRED -->
+      <mat-error *ngIf="loginFormControl.hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- FORGOT PASSWORD -->
+    <span class="forgot-password">
+      forgot
+      <a href="">
+        <strong>password</strong>
+      </a>
+      ?
+    </span>
+
+    <!-- FORM SUBMIT BUTTON -->
+    <button type="submit" class="submit-button" mat-flat-button>Sign In</button>
+  </form>
+
+  <!-- GOOGLE LOGIN -->
+  <button mat-flat-button class="google-login" (click)="authservice.signInWithGoogle()" >
+    <img class="google-logo" src="../../../assets/images/google-logo.png" alt="">Sign in with Google
+  </button>
+
+  <!-- SIGN UP -->
+  <span class="sign-up">
+    Have not account yet?
+    <br>
+    <a (click)="openDialog()">
+      <strong>
+        SIGN UP
+      </strong>
+    </a>
+  </span>
+
+
+</div>

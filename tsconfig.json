@@ -21,8 +21,10 @@
     "paths": {
       "@wl-core/*": ["src/app/core/*"],
       "@wl-shared/*": ["src/app/shared/*"],
+      "@wl-blocks/*": ["src/app/blocks/*"],
       "@environments/*": ["src/environments/*"],
-    }
+      "@wl-theme/*": ["src/theme/*"],
+    },
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

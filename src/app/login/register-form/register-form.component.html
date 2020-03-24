@@ -1,0 +1,77 @@
+<div class="container">
+  <span class="title">SIGN UP</span>
+
+  <form [formGroup]="form" (ngSubmit)="submitAccount(form)" >
+
+     <!-- FIRSTNAME -->
+     <mat-form-field class="wl-form-field" >
+      <mat-label>Firstname</mat-label>
+      <input matInput name="firstname" ngModel formControlName="firstname" placeholder="Firstname">
+      <!-- ERROR HANDLER REQUIRED -->
+      <mat-error *ngIf="form.get('firstname').hasError('required')">
+        Firstname is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+
+     <!-- LASTNAME -->
+     <mat-form-field class="wl-form-field" >
+      <mat-label>Lastname</mat-label>
+      <input matInput formControlName="lastname" placeholder="Lastname">
+      <!-- ERROR HANDLER REQUIRED -->
+      <mat-error *ngIf="form.get('lastname').hasError('required')">
+        Lastname is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+
+     <!-- EMAIL -->
+     <mat-form-field class="wl-form-field" >
+      <mat-label>Email</mat-label>
+      <input matInput  formControlName="email" placeholder="user@example.com">
+      <!-- ERROR HANDLER NOT VALID INPUT-->
+      <mat-error *ngIf="form.get('email').hasError('email') && !form.get('email').hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+      <!-- ERROR HANDLER REQUIRED -->
+      <mat-error *ngIf="form.get('email').hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- PASSWORD -->
+    <mat-form-field class="wl-form-field"  >
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password" placeholder="Password">
+      <!-- HINT -->
+      <mat-hint class="ac-form-field-description">Between 6 and 24 characters.</mat-hint>
+      <!-- ERROR HANDLER REQUIRED -->
+      <mat-error *ngIf="form.get('password').hasError('required')">
+          Password is <strong>required</strong>
+      </mat-error>
+      <!-- ERROR HANDLER TOO SHORT PASSWORD -->
+      <mat-error *ngIf="form.get('password').hasError('minlength')">
+          Password with less than 6 characters.
+      </mat-error>
+      <!-- ERROR HANDLER TOO LONG PASSWORD -->
+      <mat-error *ngIf="form.get('password').hasError('maxlength')">
+          Password with more than 24 characters.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- PASSWORD AGAIN -->
+    <mat-form-field class="wl-form-field" >
+      <mat-label>Confirm password</mat-label>
+      <input matInput formControlName="passwordAgain" type="password" placeholder="Confirm passwors" [errorStateMatcher]="passwordMatcher">
+      <!-- ERROR HANDLER DIFFERENT PASWORD -->
+      <mat-error *ngIf="form.hasError('passwordsNotEqual')" >Passwords are different. They should be equal!</mat-error>
+    </mat-form-field>
+    <!-- TERMS -->
+    <mat-checkbox class="terms" name="acceptTerms" formControlName="acceptTerms">I accept terms and conditions</mat-checkbox>
+    <!-- SUBMIT -->
+    <button mat-raised-button [disabled]="!form.valid">Create Account</button>
+
+
+  </form>
+  <mat-icon class="exit" mat-dialog-close >close</mat-icon>
+</div >
