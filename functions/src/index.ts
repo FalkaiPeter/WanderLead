@@ -9,17 +9,23 @@ const index = client.initIndex('Users');
 const basicPhotoURL = 'https://firebasestorage.googleapis.com/v0/b/wanderlead-fcd29.appspot.com/o/blank-profile-picture.svg?alt=media&token=ef42ff39-cbf8-4cf8-8b3a-6c45fbc0a2a2';
 
 exports.initUserInFirestore = functions.auth.user().onCreate( (user, context) => {
-  const userData = { uid: user.uid, photoURL: basicPhotoURL};
-  admin.firestore().doc(`Users/${user.uid}/other/private`).set({email:user.email});
-  admin.firestore().doc(`Users/${user.uid}/other/public`).set(userData, {merge:true});
-  return admin.firestore()
-  .doc(`Users/${user.uid}`)
-  .set(
-    /* if user sign up wia register form, they have no initial displayname on authentication
-    if user have no displayName then insert only id and photoURL, cus name wil setted wia authentication service */
-    user.displayName === null ?
-    userData :
-    {...userData, displayName: user.displayName}, {merge: true} );
+  const displayName = user.displayName;
+  const photoURL = basicPhotoURL;
+  const uid = user.uid;
+  const email = user.email;
+  const batch = admin.firestore().batch();
+  const baseRef = admin.firestore().doc(`Users/${user.uid}`);
+  const publicRef = admin.firestore().doc(`Users/${user.uid}/other/public`);
+  const privateRef = admin.firestore().doc(`Users/${user.uid}/other/private`);
+  if(user.displayName === null){
+    batch.set(baseRef, {uid, photoURL}, {merge: true});
+    batch.set(publicRef, {uid, photoURL, followers: 0, followings: 0, trips: 0, bio: ''}, {merge: true});
+  }else {
+    batch.set(baseRef, {uid, displayName, photoURL}, {merge: true});
+    batch.set(publicRef, {uid, displayName, photoURL, followers: 0, followings: 0, trips: 0, bio: ''}, {merge: true});
+  }
+  batch.set(privateRef, {uid, email});
+  return batch.commit().catch(error => console.log(error));
 } );
 
 

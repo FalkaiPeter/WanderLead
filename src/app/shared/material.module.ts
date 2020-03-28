@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatButtonModule, MatInputModule, MatFormFieldModule, MatCheckboxModule} from '@angular/material';
+import {MatButtonModule, MatInputModule, MatFormFieldModule, MatCheckboxModule, MatMenuModule, MatMenuTrigger} from '@angular/material';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -27,7 +27,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatInputModule,
     MatFormFieldModule,
     MatCheckboxModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatMenuModule,
   ],
   exports: [
     MatIconModule,
@@ -40,7 +41,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatInputModule,
     MatFormFieldModule,
     MatCheckboxModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatMenuModule,
   ]
 })
 export class MaterialModule { }

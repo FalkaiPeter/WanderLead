@@ -18,6 +18,7 @@ import { NotificationState } from './states/notifications.state';
 
 
 
+
 @NgModule({
   declarations: [],
   imports: [
@@ -29,6 +30,7 @@ import { NotificationState } from './states/notifications.state';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     NgxsModule.forRoot([CurrentUserState, NotificationState]), // initial states
     NgxsReduxDevtoolsPluginModule.forRoot(),
-  ]
+  ],
+
 })
 export class CoreModule { }
