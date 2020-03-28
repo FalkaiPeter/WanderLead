@@ -16,17 +16,13 @@
     <img src="{{user.photoURL}}" alt="">
     <span class="text">{{user.displayName}}</span>
   </div>
-  <mat-icon class="dropdown-menu-trigger" (click)="menuOpened = !menuOpened">menu</mat-icon>
+  <button mat-icon-button [matMenuTriggerFor]="appMenu" class="dropdown-trigger">
+    <mat-icon>menu</mat-icon>
+  </button>
 
+  <mat-menu #appMenu="matMenu" class="nav-dropdown-menu">
+    <button mat-menu-item > <mat-icon>settings</mat-icon> Settings</button>
+    <button mat-menu-item (click)="authService.signOut()"> <mat-icon>exit_to_app</mat-icon> Logout </button>
+  </mat-menu>
 
-  <div class="dropdown-menu" *ngIf="menuOpened">
-    <span class="dropdown-menu-item">
-      <mat-icon>settings</mat-icon>
-      Settings
-    </span>
-    <span class="dropdown-menu-item">
-      <mat-icon>exit_to_app</mat-icon>
-      Logout
-    </span>
-  </div>
 </mat-toolbar>

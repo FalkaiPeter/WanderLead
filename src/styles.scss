@@ -40,3 +40,8 @@ body {
   background-color: #E5E5E5;
 }
 *:focus, *:active {outline: none;}
+
+.mat-menu-panel.nav-dropdown-menu{
+  border-radius: 0 ;
+  width: 200px ;
+}

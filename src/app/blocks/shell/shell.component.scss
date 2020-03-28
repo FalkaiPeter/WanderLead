@@ -3,22 +3,27 @@
 app-nav{
   width:100%;
 }
-  .content {
-    overflow-y: scroll;
-    top: 64px;
-    &::-webkit-scrollbar{
-      width: 0.6rem;
-    }
-    &::-webkit-scrollbar-track{
-      background: map-get($map: $wl-primary-palette, $key: 100);
+.content {
+  overflow-y: auto;
+  top: 64px;
+  bottom: 64px;
+  &::-webkit-scrollbar{
+    width: 0.4rem;
+  }
+  &::-webkit-scrollbar-track{
+    background: map-get($map: $wl-primary-palette, $key: 100);
 
-    }
-    &::-webkit-scrollbar-thumb{
-      background: map-get($map: $wl-primary-palette, $key: 700);
-      margin: auto;
-      border-radius: 0.2rem;
-    }
-    @include media('<=phone') {
-      top: 88px;
+  }
+  &::-webkit-scrollbar-thumb{
+    background: map-get($map: $wl-primary-palette, $key: 700);
+    margin: auto;
+    border-radius: 0.2rem;
+  }
+  @include media('<=phone') {
+    top: 88px;
+    bottom: 56px;
+    &::-webkit-scrollbar{
+      width: 0.3rem;
     }
   }
+}
