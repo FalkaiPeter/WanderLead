@@ -14,12 +14,13 @@ const canActivate = (authGuardPipe: AuthPipe | AuthPipeGenerator) => ({
 
 const routes: Routes = [
   { path: '', component: ShellComponent,...canActivate(redirectUnauthorizedToLogin), children: [
-    { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
-    { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) },
-    { path: 'discover', loadChildren: () => import('./discover/discover.module').then(m => m.DiscoverModule) },
+    { path: 'home', loadChildren: () => import('./feature/home/home.module').then(m => m.HomeModule) },
+    { path: 'profile', loadChildren: () => import('./feature/profile/profile.module').then(m => m.ProfileModule) },
+    { path: 'discover', loadChildren: () => import('./feature/discover/discover.module').then(m => m.DiscoverModule) },
     { path: '', redirectTo: 'home', pathMatch: 'full'},
   ]},
-  { path: 'login', ...canActivate(redirectAuthorisedToHome), loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
+  // tslint:disable-next-line: max-line-length
+  { path: 'login', ...canActivate(redirectAuthorisedToHome), loadChildren: () => import('./feature/login/login.module').then(m => m.LoginModule) },
   { path: '**', component: NotFoundComponent },
 ];
 

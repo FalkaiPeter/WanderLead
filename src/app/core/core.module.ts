@@ -9,6 +9,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '@environments/environment';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { CurrentUserState } from './states/current-user.state';
+import { NotificationState } from './states/notifications.state';
 
 
 
@@ -25,7 +27,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    NgxsModule, // initial states
+    NgxsModule.forRoot([CurrentUserState, NotificationState]), // initial states
     NgxsReduxDevtoolsPluginModule.forRoot(),
   ]
 })

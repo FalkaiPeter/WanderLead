@@ -1,0 +1,129 @@
+@import '../../../theme/wl-breakpoints';
+@import '../../../theme/wl-colors';
+
+mat-icon{
+  color: rgba($color: #ffffff, $alpha: .5);
+  cursor: pointer;
+  font-size: 35px;
+  height: 35px;
+  &:hover {
+    color: rgba($color: #ffffff, $alpha: .8);
+  }
+}
+.nav{
+  background-color: $wl-primary;
+  display: grid;
+  grid-template-columns: 35px auto auto auto 35px ;
+  grid-template-areas: 'logo search icon-menu name dropdown-trigger';
+  gap: 0 20px;
+  .logo {
+    grid-area: logo;
+    height: 35px;
+    width: 35px;
+  }
+  .search{
+    grid-area: search;
+    max-width: 200px;
+  }
+  .icon-menu {
+    grid-area: icon-menu;
+    max-width: 700px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    .icon-menu-item {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+  }
+
+  .name{
+    grid-area: name;
+    word-wrap: none;
+    white-space: nowrap;
+    text-align: right;
+    img{
+      height: 35px;
+      width: 35px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+    .text {
+      padding-left: 5px;
+      font-size: 14px;
+      font-weight: 400;
+      vertical-align: middle;
+      line-height: 64px;
+      color: #ffffff;
+    }
+  }
+  .dropdown-trigger {
+    text-align: right;
+  }
+
+  @include media('<=tablet') {
+    grid-template-areas: 'search icon-menu name dropdown-trigger';
+    grid-template-columns: 75px auto 75px 35px;
+    .name>.text { display: none;}
+    .logo { display: none;}
+  }
+
+  @include media('<=phone'){
+    mat-icon {
+      height: initial;
+      font-size: 24px;
+    }
+    grid-template-columns: auto auto 24px;
+    grid-template-areas: 'search name dropdown-trigger' 'icon-menu icon-menu icon-menu';
+    height: 88px;
+    grid-template-rows: 44px 44px;
+    .name>img{
+      height: 30px;
+      width: 30px;
+    }
+    .dropdown-menu{
+      top: 50%;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.dropdown-menu{
+  position: absolute;
+  right: 0;
+  top: 100%;
+  width: 200px;
+  border-radius: 4px;
+  box-shadow: $wl-shadow;
+  cursor: pointer;
+  background-color: #ffffff;
+  .dropdown-menu-item{
+    color: $wl-primary;
+    display: flex;
+    line-height: 40px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba($color: #000000, $alpha: .1);
+    font-size: 14px;
+    mat-icon{
+      color: $wl-primary;
+      vertical-align: middle;
+      line-height: 40px;
+      padding: 0 10px;
+    }
+    &:hover {
+      background-color: rgba($color: #000000, $alpha: .05);
+    }
+  }
+}

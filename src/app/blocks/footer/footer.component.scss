@@ -1,0 +1,7 @@
+@import '../../../theme/wl-colors';
+mat-toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: $wl-primary;
+}

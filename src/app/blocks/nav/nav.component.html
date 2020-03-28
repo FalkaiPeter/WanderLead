@@ -1,1 +1,32 @@
-<p>nav works!</p>
+<mat-toolbar class="nav" *ngIf="(currentUser$ | async) as user">
+
+  <img src="" alt="logo" class="logo">
+  <!-- MAJD KULON COMPONENT LESZ EZ CSAK IDEIGLENES -->
+  <input type="text" class="search" placeholder="Search...">
+
+  <div class="icon-menu">
+    <app-notification class="icon-menu-item"></app-notification>
+    <mat-icon class="icon-menu-item">comment</mat-icon>
+    <mat-icon class="icon-menu-item" [routerLink]="['/home']" routerLinkActive="router-link-active">home</mat-icon>
+    <mat-icon class="icon-menu-item" [routerLink]="['/discover']" routerLinkActive="router-link-active">public</mat-icon>
+    <mat-icon class="icon-menu-item" [routerLink]="['/planning']" routerLinkActive="router-link-active" >add_location</mat-icon>
+  </div>
+
+  <div class="name" [routerLink]="['/profile', user.uid]">
+    <img src="{{user.photoURL}}" alt="">
+    <span class="text">{{user.displayName}}</span>
+  </div>
+  <mat-icon class="dropdown-menu-trigger" (click)="menuOpened = !menuOpened">menu</mat-icon>
+
+
+  <div class="dropdown-menu" *ngIf="menuOpened">
+    <span class="dropdown-menu-item">
+      <mat-icon>settings</mat-icon>
+      Settings
+    </span>
+    <span class="dropdown-menu-item">
+      <mat-icon>exit_to_app</mat-icon>
+      Logout
+    </span>
+  </div>
+</mat-toolbar>

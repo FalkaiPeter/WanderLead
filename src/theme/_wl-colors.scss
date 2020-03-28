@@ -1,44 +1,44 @@
-$wl-primary: #364f6b;
-$wl-primary-dark: #072740;
-$wl-primary-light: #637b99;
+$wl-primary: #575151;
+$wl-primary-dark: #464040;
+$wl-primary-light: #898585;
 
 $wl-secondary: #4fc3f7;
 $wl-secondary-dark: #0093c4;
 $wl-secondary-light: #8bf6ff;
 $wl-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
 $wl-primary-palette:  (
-    50 : #e7eaed,
-    100 : #c3cad3,
-    200 : #9ba7b5,
-    300 : #728497,
-    400 : #546981,
-    500 : #364f6b,
-    600 : #304863,
-    700 : #293f58,
-    800 : #22364e,
-    900 : #16263c,
-    A100 : #7bafff,
-    A200 : #4890ff,
-    A400 : #1571ff,
-    A700 : #0063fb,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #ffffff,
-        500 : #ffffff,
-        600 : #ffffff,
-        700 : #ffffff,
-        800 : #ffffff,
-        900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #ffffff,
-        A700 : #ffffff,
+  50 : #ebeaea,
+  100 : #cdcbcb,
+  200 : #aba8a8,
+  300 : #898585,
+  400 : #706b6b,
+  500 : #575151,
+  600 : #4f4a4a,
+  700 : #464040,
+  800 : #3c3737,
+  900 : #2c2727,
+  A100 : #f78383,
+  A200 : #f35353,
+  A400 : #ff1414,
+  A700 : #fa0000,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #000000,
+      400 : #ffffff,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #ffffff,
+      A700 : #ffffff,
     )
 );
-
 
 
 

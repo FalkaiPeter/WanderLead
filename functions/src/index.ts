@@ -10,6 +10,8 @@ const basicPhotoURL = 'https://firebasestorage.googleapis.com/v0/b/wanderlead-fc
 
 exports.initUserInFirestore = functions.auth.user().onCreate( (user, context) => {
   const userData = { uid: user.uid, photoURL: basicPhotoURL};
+  admin.firestore().doc(`Users/${user.uid}/other/private`).set({email:user.email});
+  admin.firestore().doc(`Users/${user.uid}/other/public`).set(userData, {merge:true});
   return admin.firestore()
   .doc(`Users/${user.uid}`)
   .set(
@@ -48,8 +50,12 @@ exports.removeUserDataOnDelete = functions.auth.user().onDelete(async (user, con
   await userDoc.delete();
   // remove user index from algolia
   return index.deleteObject(user.uid);
+})
 
+exports.lastLogout = functions.https.onRequest((req,res) => {
 
-
+  admin.firestore().doc(`LogoutLogs/${req.body}`).set({lastlogout: Date.now()})
+  .then( () => console.log(`${req.body} logged out! Timestamp saved to firestore`))
+  .catch(error => console.log(error));
 })
 
