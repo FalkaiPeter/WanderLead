@@ -5,8 +5,7 @@ import { Router } from '@angular/router';
 import { auth } from 'firebase';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { CurrentUserState } from '@wl-core/states/current-user.state';
-import { NotificationState } from '@wl-core/states/notifications.state';
+import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +18,11 @@ export class AuthenticationService {
   async signInWithGoogle() {
     const provider = new auth.GoogleAuthProvider();
     const popup = (await this.afauth.auth.signInWithPopup(provider));
+    const user = popup.user;
     if (popup.additionalUserInfo.isNewUser) {
-      await popup.user.updateProfile({photoURL: this.basicPhotoURL});
+      await user.updateProfile({photoURL: this.basicPhotoURL});
     }
+    this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, displayName: user.displayName, photoURL: user.photoURL}));
     this.router.navigate(['/home']);
   }
 
@@ -39,11 +40,12 @@ export class AuthenticationService {
     user.updateProfile({ displayName, photoURL: this.basicPhotoURL });
     /* add user name to db cuz cloud function insert null on user name */
     this.db.doc(`Users/${user.uid}`).set({displayName}, {merge: true});
+    this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, photoURL: this.basicPhotoURL, displayName}));
     this.router.navigate(['/home']);
   }
 
   signOut(){
-    this.store.reset([CurrentUserState, NotificationState]);
+    //this.store.reset([CurrentUserState, NotificationState]);
     this.afauth.auth.signOut();
     this.router.navigate(['/login']);
 

@@ -1,26 +1,22 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { NgxsOnInit, Store, StateContext } from '@ngxs/store';
-import { CurrentUserState } from '@wl-core/states/current-user.state';
+import { Store } from '@ngxs/store';
 import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements OnInit, NgxsOnInit {
+export class AppComponent implements OnInit {
 
   constructor( private updates: SwUpdate, private store: Store, private afs: AngularFirestore) {
     updates.available.subscribe(() => updates.activateUpdate().then(() => window.location.reload()));
   }
-  ngxsOnInit(ctx?: StateContext<any>) {
-    console.log('asd');
-  }
   ngOnInit(): void {
     this.store.dispatch(new CurrentUserActions.SetFromBackend());
-    this.afs.collection('Users').stateChanges().subscribe(a => a.forEach(b => console.log(b.payload)));
   }
 
 
