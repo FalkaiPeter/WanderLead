@@ -43,6 +43,7 @@ mat-icon{
     word-wrap: none;
     white-space: nowrap;
     text-align: right;
+    cursor: pointer;
     img{
       height: 35px;
       width: 35px;
@@ -58,8 +59,13 @@ mat-icon{
       color: #ffffff;
     }
   }
-  .dropdown-trigger {
-    text-align: right;
+  .dropdown-trigger{
+    grid-area: dropdown-trigger;
+    width: 35px;
+    mat-icon{
+      line-height: 1;
+      vertical-align: initial;
+    }
   }
 
   @include media('<=tablet') {
@@ -82,48 +88,12 @@ mat-icon{
       height: 30px;
       width: 30px;
     }
-    .dropdown-menu{
-      top: 50%;
-    }
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-.dropdown-menu{
-  position: absolute;
-  right: 0;
-  top: 100%;
-  width: 200px;
-  border-radius: 4px;
-  box-shadow: $wl-shadow;
-  cursor: pointer;
-  background-color: #ffffff;
-  .dropdown-menu-item{
-    color: $wl-primary;
-    display: flex;
-    line-height: 40px;
-    vertical-align: middle;
-    border-bottom: 1px solid rgba($color: #000000, $alpha: .1);
-    font-size: 14px;
-    mat-icon{
-      color: $wl-primary;
-      vertical-align: middle;
-      line-height: 40px;
-      padding: 0 10px;
-    }
-    &:hover {
-      background-color: rgba($color: #000000, $alpha: .05);
+    .dropdown-trigger{
+      grid-area: dropdown-trigger;
+      width: 24px;
+      mat-icon{
+        vertical-align: middle;
+      }
     }
   }
 }
