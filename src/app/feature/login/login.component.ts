@@ -23,7 +23,7 @@ export class LoginComponent {
   openDialog(){
     const dialogRef = this.dialog.open(RegisterFormComponent, {panelClass: 'full-width-dialog'});
     dialogRef.afterClosed().subscribe((result: FormGroup) => {
-      if (result.value !== undefined) {
+      if (result !== undefined) {
         console.log(`dialog data: ${result}`)
         this.authservice.signUp(result).catch((error) => {alert(error); });
       }

@@ -3,6 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Store } from '@ngxs/store';
 import { WLProfileActions } from '@wl-core/actions/profile.actions';
 import { CurrentUserState } from '@wl-core/states/current-user.state';
+import { take, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

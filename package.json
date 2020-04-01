@@ -27,6 +27,7 @@
     "@angular/service-worker": "~8.2.14",
     "@babel/compat-data": "^7.8.0",
     "@ngxs/devtools-plugin": "^3.6.2",
+    "@ngxs/logger-plugin": "^3.6.2",
     "@ngxs/store": "^3.6.2",
     "angular-instantsearch": "^2.2.2",
     "firebase": ">= 5.5.7 <8",
