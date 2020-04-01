@@ -28,4 +28,9 @@ export class CurrentUserState {
       state.dispatch(new NotificationActions.ListenChanges(currentUser.uid));
     }
   }
+
+  @Action(CurrentUserActions.SetByModel)
+  setByModel(state: StateContext<WlUser.Min>, { model }: CurrentUserActions.SetByModel) {
+    return state.patchState({...state, uid: model.uid, displayName: model.displayName, photoURL: model.photoURL});
+  }
 }

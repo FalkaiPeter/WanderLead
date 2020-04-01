@@ -30,8 +30,8 @@ export class UserService {
     const batch = this.afs.firestore.batch();
     const followingRef = this.afs.firestore.doc(`Users/${currentUser.uid}/followings/${user.uid}`);
     const followersRef = this.afs.firestore.doc(`Users/${user.uid}/followers/${currentUser.uid}`);
-    const userPublicRef = this.afs.firestore.doc(`Users/${user.uid}/others/public`);
-    const currentPublicRef = this.afs.firestore.doc(`Users/${currentUser.uid}/others/public`);
+    const userPublicRef = this.afs.firestore.doc(`Users/${user.uid}/other/public`);
+    const currentPublicRef = this.afs.firestore.doc(`Users/${currentUser.uid}/other/public`);
     const increment = firestore.FieldValue.increment(1);
 
     batch.set(followingRef, user);
@@ -45,8 +45,8 @@ export class UserService {
     const batch = this.afs.firestore.batch();
     const followingRef = this.afs.firestore.doc(`Users/${currentUser.uid}/followings/${user.uid}`);
     const followersRef = this.afs.firestore.doc(`Users/${user.uid}/followers/${currentUser.uid}`);
-    const userPublicRef = this.afs.firestore.doc(`Users/${user.uid}/others/public`);
-    const currentPublicRef = this.afs.firestore.doc(`Users/${currentUser.uid}/others/public`);
+    const userPublicRef = this.afs.firestore.doc(`Users/${user.uid}/other/public`);
+    const currentPublicRef = this.afs.firestore.doc(`Users/${currentUser.uid}/other/public`);
     const decrement = firestore.FieldValue.increment(-1);
 
     batch.delete(followingRef);

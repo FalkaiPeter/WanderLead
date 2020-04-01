@@ -14,7 +14,8 @@ export namespace WLProfileActions {
     }
 
     export class Followed {
-      static readonly type = '[profile] followedByValue';
+      static readonly type = '[profile] byValue';
+      constructor(public value: boolean) {}
     }
 
   }

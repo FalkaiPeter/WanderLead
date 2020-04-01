@@ -9,8 +9,11 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '@environments/environment';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { CurrentUserState } from './states/current-user.state';
 import { NotificationState } from './states/notifications.state';
+import { AgmCoreModule } from '@agm/core';
+import { SharedModule } from '@wl-shared/shared.module';
 
 
 
@@ -28,8 +31,11 @@ import { NotificationState } from './states/notifications.state';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    NgxsModule.forRoot([CurrentUserState, NotificationState]), // initial states
+    AgmCoreModule.forRoot({apiKey: environment.firebaseConfig.apiKey}),
+    SharedModule,
+    NgxsModule.forRoot([CurrentUserState, NotificationState], { developmentMode: !environment.production }), // initial states
     NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
   ],
 
 })

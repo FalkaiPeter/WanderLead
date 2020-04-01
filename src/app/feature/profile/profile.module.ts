@@ -5,6 +5,8 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileComponent } from './profile.component';
 import { NgxsModule } from '@ngxs/store';
 import { ProfileState } from '@wl-core/states/profile.state';
+import { SharedModule } from '@wl-shared/shared.module';
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -12,7 +14,9 @@ import { ProfileState } from '@wl-core/states/profile.state';
   imports: [
     NgxsModule.forFeature([ProfileState]),
     CommonModule,
-    ProfileRoutingModule
+    ProfileRoutingModule,
+    SharedModule,
+    AgmCoreModule,
   ]
 })
 export class ProfileModule { }
