@@ -14,6 +14,7 @@ import { CurrentUserState } from './states/current-user.state';
 import { NotificationState } from './states/notifications.state';
 import { AgmCoreModule } from '@agm/core';
 import { SharedModule } from '@wl-shared/shared.module';
+import { NgAisModule } from 'angular-instantsearch';
 
 
 
@@ -35,7 +36,8 @@ import { SharedModule } from '@wl-shared/shared.module';
     SharedModule,
     NgxsModule.forRoot([CurrentUserState, NotificationState], { developmentMode: !environment.production }), // initial states
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
+    //NgxsLoggerPluginModule.forRoot(),
+    NgAisModule.forRoot(),
   ],
 
 })

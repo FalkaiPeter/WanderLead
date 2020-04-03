@@ -2,8 +2,10 @@
 @import '../../../theme/wl-colors';
 app-nav{
   width:100%;
+  z-index: 1000;
 }
 .content {
+  z-index: 900;
   overflow-y: auto;
   top: 64px;
   bottom: 64px;
