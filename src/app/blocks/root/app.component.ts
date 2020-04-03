@@ -2,7 +2,6 @@ import { Component, HostListener, OnInit, ChangeDetectionStrategy } from '@angul
 import { SwUpdate } from '@angular/service-worker';
 import { Store } from '@ngxs/store';
 import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
-import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +11,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class AppComponent implements OnInit {
 
-  constructor( private updates: SwUpdate, private store: Store, private afs: AngularFirestore) {
+  constructor( private updates: SwUpdate, private store: Store) {
     updates.available.subscribe(() => updates.activateUpdate().then(() => window.location.reload()));
   }
   ngOnInit(): void {
@@ -29,6 +28,7 @@ export class AppComponent implements OnInit {
 
   @HostListener('window:unload')
   logData() {
-    navigator.sendBeacon('https://us-central1-wanderlead-fcd29.cloudfunctions.net/lastLogout', this.store.snapshot().currentUser.uid);
+    if(!window.performance.navigation.TYPE_RELOAD)
+    navigator.sendBeacon('https://us-central1-wanderlead-fcd29.cloudfunctions.net/last_logout', this.store.snapshot().currentUser.uid);
   }
 }

@@ -6,6 +6,8 @@ import { auth } from 'firebase';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
+import { CurrentUserState } from '@wl-core/states/current-user.state';
+import { NotificationState } from '@wl-core/states/notifications.state';
 
 @Injectable({
   providedIn: 'root'
@@ -20,34 +22,53 @@ export class AuthenticationService {
     const popup = (await this.afauth.auth.signInWithPopup(provider));
     const user = popup.user;
     if (popup.additionalUserInfo.isNewUser) {
-      await user.updateProfile({photoURL: this.basicPhotoURL});
+      user.updateProfile({photoURL: this.basicPhotoURL});
+      console.log(user)
+      this.addUserDataToDB(user.uid, user.displayName, user.email);
     }
-    this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, displayName: user.displayName, photoURL: user.photoURL}));
+    this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, displayName: user.displayName, photoURL: this.basicPhotoURL}));
     this.router.navigate(['/home']);
   }
 
   async signIn(data: NgForm) {
-    await this.afauth.auth.signInWithEmailAndPassword(data.value.email, data.value.password);
+    const user = (await this.afauth.auth.signInWithEmailAndPassword(data.value.email, data.value.password)).user;
+    this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, displayName: user.displayName, photoURL: user.photoURL}));
     this.router.navigate(['/home']);
   }
 
   async signUp(data) {
     /* name formatting */
-    const displayName = `${data.firstname.charAt(0).toUpperCase() + data.firstname.slice(1)} ${data.lastname.charAt(0).toUpperCase() + data.lastname.slice(1)}`;
-    /* register user */
+    const displayName = this.nameFormatter(data.firstname, data.lastname);
     const user = (await this.afauth.auth.createUserWithEmailAndPassword(data.email, data.password)).user;
-    /* update profile with new data */
-    user.updateProfile({ displayName, photoURL: this.basicPhotoURL });
-    /* add user name to db cuz cloud function insert null on user name */
-    this.db.doc(`Users/${user.uid}`).set({displayName}, {merge: true});
     this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, photoURL: this.basicPhotoURL, displayName}));
+    user.updateProfile({ displayName, photoURL: this.basicPhotoURL });
+    this.addUserDataToDB(user.uid, displayName, user.email);
     this.router.navigate(['/home']);
   }
 
   signOut(){
-    //this.store.reset([CurrentUserState, NotificationState]);
+    navigator.sendBeacon('https://us-central1-wanderlead-fcd29.cloudfunctions.net/last_logout', this.store.snapshot().currentUser.uid);
+    this.store.reset([CurrentUserState, NotificationState]);
     this.afauth.auth.signOut();
     this.router.navigate(['/login']);
+  }
 
+  addUserDataToDB(uid: string, displayName: string, email: string){
+    const photoURL = this.basicPhotoURL;
+    const batch = this.db.firestore.batch();
+    const baseRef = this.db.firestore.doc(`Users/${uid}`);
+    const publicRef = this.db.firestore.doc(`Users/${uid}/other/public`);
+    const privateRef = this.db.firestore.doc(`Users/${uid}/other/private`);
+
+    batch.set(baseRef, {uid, displayName, photoURL});
+    batch.set(privateRef, {uid, email});
+    batch.set(publicRef, {uid, displayName, photoURL, followers: 0, followings: 0, trips: 0, bio: ''});
+    return batch.commit().catch(error => console.log(error));
+  }
+
+  nameFormatter(firstname: string, lastname: string) {
+    const f = `${firstname.charAt(0).toUpperCase()}${firstname.slice(1)}`;
+    const l = `${lastname.charAt(0).toUpperCase()}${lastname.slice(1)}`;
+    return `${f} ${l}`;
   }
 }

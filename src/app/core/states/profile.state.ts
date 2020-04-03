@@ -22,8 +22,6 @@ export interface ProfileStateModel {
 })
 export class ProfileState {
 
-  currentUser = this.store.selectSnapshot(CurrentUserState);
-
   constructor(private userService: UserService, private store: Store) {
   }
 
@@ -45,9 +43,13 @@ export class ProfileState {
   }
 
   @Action(WLProfileActions.Set.Followed)
-  setFollowed( state: StateContext<ProfileStateModel>){
-    const prev = state.getState().followed;
-    state.patchState({...state, followed: !prev});
+  async byValue( state: StateContext<ProfileStateModel>, { value }: WLProfileActions.Set.Followed) {
+    const currentUser = this.store.selectSnapshot(CurrentUserState);
+    const stateUser = state.getState().user;
+    const user = {uid: stateUser.uid, displayName: stateUser.displayName, photoURL: stateUser.photoURL};
+    value ? await this.userService.follow(currentUser, user) : await this.userService.unfollow(currentUser, user);
+    return state.patchState({...state, followed: value});
+
   }
 
   @Action(WLProfileActions.Followers)

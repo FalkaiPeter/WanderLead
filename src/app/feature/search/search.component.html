@@ -1,0 +1,23 @@
+<ais-instantsearch [config]="searchConfig">
+  <ais-search-box  placeholder="Search..." class="nav-search-box"></ais-search-box>
+
+    <ais-hits >
+      <ng-template let-hits="hits" let-results="results">
+
+
+        <div class="nav-search-result-list" *ngIf="results.query">
+          <div *ngIf="hits.length === 0" class="nav-search-result-list-item" >
+            <span>No results found matching <strong>{{results.query}}</strong>.</span>
+          </div>
+          <div *ngFor="let hit of hits" class="nav-search-result-list-item">
+            <img src="{{hit.photoURL}}" alt="photo">
+            <span [routerLink]="['/profile', hit.uid]" class="name">{{hit.displayName}}</span>
+          </div>
+        </div>
+
+
+      </ng-template>
+    </ais-hits>
+
+</ais-instantsearch>
+

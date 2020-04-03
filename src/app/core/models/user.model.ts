@@ -7,7 +7,7 @@ export namespace WlUser {
   }
 
   export interface Public extends Min {
-    followes: number;
+    followers: number;
     followings: number;
     trips: number;
     bio: string;

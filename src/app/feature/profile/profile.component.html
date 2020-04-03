@@ -1,1 +1,41 @@
-<p>profile works!</p>
+<div class="container" *ngIf="(profile$ | async) as profile" [ngClass]="{'mobile': isMobile$|async}">
+
+  <div class="profile-info" *ngIf="profile.user !== null">
+    <img src="{{profile.user.photoURL}}" alt="photo" class="photo">
+
+    <span class="name">{{profile.user.displayName}}</span>
+    <div class="stats">
+      <div class="stat">
+        <span class="type">Trips</span>
+        <br>
+        <span class="count">{{profile.user.trips}}</span>
+      </div>
+
+      <div class="stat">
+        <span class="type">Followers</span>
+        <br>
+        <span class="count">{{profile.user.followers}}</span>
+      </div>
+
+      <div class="stat">
+        <span class="type">Followings</span>
+        <br>
+        <span class="count">{{profile.user.followings}}</span>
+      </div>
+    </div>
+    <div class="buttons">
+      <mat-icon class="map-btn" (click)="openMap()" [ngClass]="{'active-btn': mapOpened}">map</mat-icon>
+      <mat-icon class="about-btn" (click)="openAbout()" [ngClass]="{'active-btn': aboutOpened}">help_outline</mat-icon>
+    </div>
+    <button class="follow-btn" *ngIf="profile.followed !== null" (click)="profile.followed ? unfollow() : follow()">{{ profile.followed ? 'Unfollow' : 'Follow'}}</button>
+    <div class="map-container" *ngIf="mapOpened" [ngClass]="{'fullscreen-map': isFullscreen}">
+      <agm-map class="map" ></agm-map>
+      <mat-icon class="fullscreen" *ngIf="isMobile$ | async" (click)="isFullscreen = !isFullscreen" >fullscreen</mat-icon>
+      <mat-icon class="close" *ngIf="isFullscreen" (click)="isFullscreen = !isFullscreen">close</mat-icon>
+    </div>
+    <div class="about" *ngIf="aboutOpened">
+      <span>bio</span>
+      <span class="bio">{{profile.user.bio}}</span>
+    </div>
+  </div>
+</div>
