@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { auth } from 'firebase';
+import { auth } from 'firebase/app';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
 import { CurrentUserState } from '@wl-core/states/current-user.state';
 import { NotificationState } from '@wl-core/states/notifications.state';
+
 
 @Injectable({
   providedIn: 'root'

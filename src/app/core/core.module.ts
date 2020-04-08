@@ -13,7 +13,6 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { CurrentUserState } from './states/current-user.state';
 import { NotificationState } from './states/notifications.state';
 import { AgmCoreModule } from '@agm/core';
-import { SharedModule } from '@wl-shared/shared.module';
 import { NgAisModule } from 'angular-instantsearch';
 
 
@@ -33,11 +32,10 @@ import { NgAisModule } from 'angular-instantsearch';
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AgmCoreModule.forRoot({apiKey: environment.firebaseConfig.apiKey}),
-    SharedModule,
-    NgxsModule.forRoot([CurrentUserState, NotificationState], { developmentMode: !environment.production }), // initial states
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-    //NgxsLoggerPluginModule.forRoot(),
     NgAisModule.forRoot(),
+    NgxsModule.forRoot([CurrentUserState, NotificationState], { developmentMode: !environment.production }), // initial states
+    //NgxsReduxDevtoolsPluginModule.forRoot(),
+    //NgxsLoggerPluginModule.forRoot(),
   ],
 
 })
