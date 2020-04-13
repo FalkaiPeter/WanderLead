@@ -57,13 +57,13 @@ export class AuthenticationService {
   addUserDataToDB(uid: string, displayName: string, email: string){
     const photoURL = this.basicPhotoURL;
     const batch = this.db.firestore.batch();
-    const baseRef = this.db.firestore.doc(`Users/${uid}`);
-    const publicRef = this.db.firestore.doc(`Users/${uid}/other/public`);
-    const privateRef = this.db.firestore.doc(`Users/${uid}/other/private`);
+    const baseRef = this.db.doc(`Users/${uid}`);
+    const publicRef = this.db.doc(`Users/${uid}/other/public`);
+    const privateRef = this.db.doc(`Users/${uid}/other/private`);
 
-    batch.set(baseRef, {uid, displayName, photoURL});
-    batch.set(privateRef, {uid, email});
-    batch.set(publicRef, {uid, displayName, photoURL, followers: 0, followings: 0, trips: 0, bio: ''});
+    batch.set(baseRef.ref, {uid, displayName, photoURL});
+    batch.set(privateRef.ref, {uid, email});
+    batch.set(publicRef.ref, {uid, displayName, photoURL, followers: 0, followings: 0, trips: 0, bio: ''});
     return batch.commit().catch(error => console.log(error));
   }
 

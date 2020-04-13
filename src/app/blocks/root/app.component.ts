@@ -18,14 +18,6 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new CurrentUserActions.SetFromBackend());
   }
 
-
-
-  @HostListener('window:beforeunload')
-  onCloseTab() {
-    if (window.performance.navigation.TYPE_RELOAD)
-      localStorage.setItem('last_close', Date.now().toString());
-  }
-
   @HostListener('window:unload')
   logData() {
     if(!window.performance.navigation.TYPE_RELOAD)

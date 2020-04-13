@@ -1,0 +1,13 @@
+<input type="text" #search class="search">
+<agm-map class="map" #map
+  [latitude]="(mapCenter$ | async).lat"
+  [longitude]="(mapCenter$ | async).lng"
+  [zoom]="12"
+  [usePanning]="true"
+  style="height: 400px;"
+  (mapClick)="addMarker($event)"
+  [showDefaultInfoWindow]="false"
+>
+
+</agm-map>
+
