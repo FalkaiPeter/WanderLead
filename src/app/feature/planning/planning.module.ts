@@ -3,22 +3,23 @@ import { CommonModule } from '@angular/common';
 
 import { PlanningRoutingModule } from './planning-routing.module';
 import { PlanningComponent } from './planning.component';
-import { AgmCoreModule } from '@agm/core';
-import { NgxsModule } from '@ngxs/store';
-import { PlanningState } from './planning.state';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@wl-shared/shared.module';
-
+import { PlaceGroupModule } from '@wl-shared/place-group/place-group.module';
+import { TodoGroupModule } from '@wl-shared/todo-group/todo-group.module';
+import { PriceGroupModule } from '@wl-shared/price-group/price-group.module';
 
 @NgModule({
   declarations: [PlanningComponent],
   imports: [
     CommonModule,
     PlanningRoutingModule,
-    AgmCoreModule,
-    NgxsModule.forFeature([PlanningState]),
     FormsModule,
-    SharedModule
+    ReactiveFormsModule,
+    SharedModule,
+    PlaceGroupModule,
+    TodoGroupModule,
+    PriceGroupModule
   ]
 })
 export class PlanningModule { }

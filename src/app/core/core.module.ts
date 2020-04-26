@@ -12,14 +12,6 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { CurrentUserState } from './states/current-user.state';
 import { NotificationState } from './states/notifications.state';
 import { NgAisModule } from 'angular-instantsearch';
-import { AgmCoreModule } from '@agm/core';
-import { GoogleMapsModule } from '@angular/google-maps';
-
-
-
-
-
-
 
 
 @NgModule({
@@ -31,11 +23,9 @@ import { GoogleMapsModule } from '@angular/google-maps';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AgmCoreModule.forRoot({apiKey: environment.firebaseConfig.apiKey, libraries: ['places', 'geometry']}),
     NgAisModule.forRoot(),
-    GoogleMapsModule,
     NgxsModule.forRoot([CurrentUserState, NotificationState], { developmentMode: !environment.production }), // initial states
-    NgxsReduxDevtoolsPluginModule.forRoot(),
+    //NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
 
 })
