@@ -1,13 +1,79 @@
-<input type="text" #search class="search">
-<agm-map class="map" #map
-  [latitude]="(mapCenter$ | async).lat"
-  [longitude]="(mapCenter$ | async).lng"
-  [zoom]="12"
-  [usePanning]="true"
-  style="height: 400px;"
-  (mapClick)="addMarker($event)"
-  [showDefaultInfoWindow]="false"
->
+<div class="title">
+  <span>{{planTitle}}</span>
+  <button mat-button [disabled]="metaDataFormGroup.invalid" color="primary" (click)="savePlan()">Save</button>
+</div>
+<form class="metadata" [formGroup]="metaDataFormGroup">
 
-</agm-map>
+  <mat-form-field appearance="legacy" class="metadata-title" >
+    <mat-label>Title</mat-label>
+    <input matInput placeholder="" type="text" formControlName="title" [errorStateMatcher]="metaDataMatcher" required>
+    <mat-error *ngIf="metaDataFormGroup.get('title').errors?.minlength">
+      Title must have at least 2 character long
+    </mat-error>
+    <mat-error *ngIf="metaDataFormGroup.get('title').errors?.maxlength">
+      Title must less than 20 character
+    </mat-error>
+    <mat-error *ngIf="metaDataFormGroup.get('title').errors?.required">
+      Title is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="legacy" class="metadata-date">
+    <mat-label>Start date</mat-label>
+    <input matInput [matDatepicker]="start" formControlName="start">
+    <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+    <mat-datepicker #start></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="legacy" class="metadata-date">
+    <mat-label>End date</mat-label>
+    <input matInput [matDatepicker]="end" formControlName="end">
+    <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+    <mat-datepicker #end></mat-datepicker>
+  </mat-form-field>
+
+</form>
+
+<form action=""class="search">
+  <mat-form-field appearance="legacy" >
+    <mat-label>Find places...</mat-label>
+    <input matInput placeholder="" type="text" #search>
+  </mat-form-field>
+</form>
+
+<div class="map"  #mapRef style="height: 400px;"></div>
+
+<div class="tabs">
+  <span class="tab" [ngClass]="{'active-tab': openedTab === 'places' }" (click)="openedTab = 'places' ">Places</span>
+  <span class="tab" [ngClass]="{'active-tab': openedTab === 'prices' }" (click)="openedTab = 'prices' ">Prices</span>
+  <span class="tab" [ngClass]="{'active-tab': openedTab === 'todo' }" (click)="openedTab = 'todo' ">Todo</span>
+  <span class="tab" [ngClass]="{'active-tab': openedTab === 'coffer' }" (click)="openedTab = 'coffer' ">Coffer</span>
+</div>
+<app-place-group [map]='map' [hidden]="openedTab !== 'places' "></app-place-group>
+<app-price-group [hidden]="openedTab !== 'prices' " [priceGroups]="priceList"></app-price-group>
+<app-todo-group [hidden]="openedTab !== 'todo' "></app-todo-group>
+<app-todo-group [hidden]="openedTab !== 'coffer' "></app-todo-group>
+
+<!-- dinamikusan frissülő info window a markerhez,
+  jobb szeparalva tartani, minden egyéb kontent után, mert egy villanásra kirenderelődik mielött a marker felhasználná -->
+<div class="wrapper" #infoWindowContent>
+    <div *ngIf="marker.place">
+      <span class="" >{{marker.place.name}}</span>
+      <span class="" >Address: {{marker.place.formatted_address}}</span>
+      <span class="" >Rating: {{marker.place.rating}}</span>
+      <div class="buttons">
+        <span>Add to Group</span>
+        <button
+          mat-button
+          (click)="addMarkerToGroup(group)"
+          [ngStyle]="{'background-color': group.color}"
+          *ngFor="let group of placeGroup.placeGroups; index as i; trackBy:i">
+          {{group.title}}
+        </button>
+      </div>
+    </div>
+</div>
+
+
+
 
