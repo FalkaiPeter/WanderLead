@@ -1,10 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef, ViewChild, ElementRef, ViewChildren } from '@angular/core';
-import { WLPLaceGroup } from '@wl-shared/list-types';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
+import { WLPLaceGroup } from '@wl-core/models/list-types';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import {FormControl, FormGroupDirective, NgForm, Validators, Form} from '@angular/forms';
+import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
 import { WLValidators, WLErrorStateMatcher } from '@wl-core/validators';
-import { throwError } from 'rxjs';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -144,4 +143,7 @@ export class PlaceGroupComponent implements OnInit {
     ];
     this.floatingPanel.group = null;
   }
+
+  trackby = (index: number, item) => item;
+
 }

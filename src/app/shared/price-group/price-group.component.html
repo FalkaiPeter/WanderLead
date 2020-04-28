@@ -1,7 +1,7 @@
 <div class="wrapper" cdkDropListGroup [ngClass]="[wrapperClass]">
   <span class="total">Total: {{total}}</span>
   <div class="group"
-    *ngFor="let group of priceGroups; index as i; trackBy:i"
+    *ngFor="let group of priceGroups; index as i; trackBy:trackby"
     cdkDropList
     [cdkDropListData]="group"
     (cdkDropListDropped)="drop($event)">

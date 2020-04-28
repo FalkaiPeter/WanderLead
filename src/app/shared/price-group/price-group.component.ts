@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { WLPriceList } from '@wl-shared/list-types';
+import { WLPriceList } from '@wl-core/models/list-types';
 import { FormControl, NgForm } from '@angular/forms';
 import { WLErrorStateMatcher, WLValidators } from '@wl-core/validators';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -92,4 +92,5 @@ export class PriceGroupComponent implements AfterViewInit {
       y: `${event.clientY - (window.outerWidth <= 425 ? 88 : 64)}px`
     };
   }
+  trackby = (index: number, item) => item;
 }

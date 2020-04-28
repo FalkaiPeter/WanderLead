@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { WLTodoList } from '@wl-shared/list-types';
+import { WLTodoList } from '@wl-core/models/list-types';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { WLValidators, WLErrorStateMatcher } from '@wl-core/validators';
@@ -87,6 +87,7 @@ export class TodoGroupComponent implements OnInit {
       y: `${event.clientY - (window.outerWidth <= 425 ? 88 : 64)}px`
     };
   }
+  trackby = (index: number, item) => item;
 
 
 }

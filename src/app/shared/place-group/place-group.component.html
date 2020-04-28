@@ -1,6 +1,6 @@
 <div class="wrapper" cdkDropListGroup [ngClass]="[wrapperClass]">
   <div class="group"
-    *ngFor="let group of placeGroups; index as i; trackBy:i"
+    *ngFor="let group of placeGroups; let i = index; trackBy:trackby"
     cdkDropList
     [cdkDropListData]="group"
     (cdkDropListDropped)="drop($event)">
