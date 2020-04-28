@@ -42,6 +42,7 @@ export class WLTodoList extends WLGenericList<WLITodo> {
     const item = super.getItem(index);
     super.setItem(index, {name: item.name, done: !item.done});
   }
+
 }
 
 export interface WLIPice {
@@ -50,11 +51,13 @@ export interface WLIPice {
 }
 
 export class WLPriceList extends WLGenericList<WLIPice> {
-  private _sum: number = 0;
   constructor(title: string, items?: WLIPice[]) {
     super(title, items);
     items ? items.forEach(item => this._sum += item.price) : this._sum = 0;
   }
+  get sum() { return this._sum; }
+  private _sum: number = 0;
+
   add(item: WLIPice) {
     this._sum += item.price;
     return super.add(item);
@@ -63,7 +66,7 @@ export class WLPriceList extends WLGenericList<WLIPice> {
     this._sum -= super.items[index].price;
     return super.remove(index);
   }
-  get sum() { return this._sum; }
+
 }
 
 export interface WLPlace {
@@ -121,7 +124,48 @@ export class WLPLaceGroup extends WLGenericList<WLPlace> {
       labelOrigin: new google.maps.Point(2071.5, 3900)
     };
   }
-  remove (index: number) {
+
+  addPlace(place: google.maps.places.PlaceResult) {
+    const infoWindowContent =
+   `<div class="wrapper">
+      <div>
+        <span class="">${place.name}</span>
+        <span class="">Address: ${place.formatted_address}</span>
+        <span class="">Rating: ${place.rating}</span>
+      </div>
+    </div>`;
+    const marker = new google.maps.Marker({
+      map: this._map,
+      position: place.geometry.location,
+      /* ez az ikon trükkös dolog nagyon, scale nelkul be kell rakni eloszor megnezni a mereteket majd xre a szelesseg felet beirni.  */
+      icon: {
+        path: `M1708 6384 c-830 -107 -1503 -725 -1668 -1534 -28 -138 -35 -215 -35
+        -395 0 -178 6 -245 37 -385 45 -210 107 -358 281 -670 162 -292 184 -329 473
+        -776 364 -563 503 -799 662 -1120 204 -413 356 -822 462 -1247 28 -109 50
+        -207 50 -218 0 -36 17 -19 24 24 14 92 100 418 152 580 202 621 446 1101 972
+        1912 363 560 430 670 575 961 159 318 216 487 244 719 10 88 10 359 0 445 -12
+        107 -16 130 -48 260 -118 480 -453 926 -891 1184 -195 114 -451 207 -678 245
+        -36 6 -81 13 -100 16 -77 13 -407 12 -512 -1z`,
+        scale: 0.00655,
+        fillOpacity: 1,
+        fillColor: this.color,
+        rotation: 180,
+        scaledSize: new google.maps.Size(27, 43, 'pt', 'pt'),
+        anchor: new google.maps.Point(1971.5, 0),
+        labelOrigin: new google.maps.Point(2071.5, 3900)
+      },
+      label: (this.items.length + 1).toString(),
+    });
+    const infoWindow = new SnazzyInfoWindow({
+      marker,
+      content: infoWindowContent,
+      closeWhenOthersOpen: true,
+      wrapperClass: 'info-window',
+    });
+    super.add({place, infoWindow, marker});
+  }
+
+  remove(index: number) {
     super.items[index].marker.setMap(null);
     const items = super.remove(index);
     for (let i = 0; i < items.length; i++) {
@@ -139,7 +183,7 @@ export class WLPLaceGroup extends WLGenericList<WLPlace> {
       return;
     } else {
       const waypoints: google.maps.DirectionsWaypoint[] = [];
-      this.items.slice(1, this.items.length - 1).forEach(item =>{
+      this.items.slice(1, this.items.length - 1).forEach(item => {
         waypoints.push({location: item.place.geometry.location});
       });
       this._directionsService.route({
@@ -151,8 +195,8 @@ export class WLPLaceGroup extends WLGenericList<WLPlace> {
       }, route => {
         this._directionsRenderer.setMap(this._map);
         this._directionsRenderer.setDirections(route);
-      })
+      });
     }
-
   }
+
 }

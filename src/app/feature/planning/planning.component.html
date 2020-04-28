@@ -32,6 +32,8 @@
     <mat-datepicker #end></mat-datepicker>
   </mat-form-field>
 
+  <mat-checkbox formControlName="isPublic">Public</mat-checkbox>
+
 </form>
 
 <form action=""class="search">
@@ -49,10 +51,10 @@
   <span class="tab" [ngClass]="{'active-tab': openedTab === 'todo' }" (click)="openedTab = 'todo' ">Todo</span>
   <span class="tab" [ngClass]="{'active-tab': openedTab === 'coffer' }" (click)="openedTab = 'coffer' ">Coffer</span>
 </div>
-<app-place-group [map]='map' [hidden]="openedTab !== 'places' "></app-place-group>
-<app-price-group [hidden]="openedTab !== 'prices' " [priceGroups]="priceList"></app-price-group>
-<app-todo-group [hidden]="openedTab !== 'todo' "></app-todo-group>
-<app-todo-group [hidden]="openedTab !== 'coffer' "></app-todo-group>
+<app-place-group #placeGroupC [map]='map' [hidden]="openedTab !== 'places' "></app-place-group>
+<app-price-group #priceGroupC [hidden]="openedTab !== 'prices' "></app-price-group>
+<app-todo-group #todoGroupC [hidden]="openedTab !== 'todo' "></app-todo-group>
+<app-todo-group #cofferGroupC [hidden]="openedTab !== 'coffer' "></app-todo-group>
 
 <!-- dinamikusan frissülő info window a markerhez,
   jobb szeparalva tartani, minden egyéb kontent után, mert egy villanásra kirenderelődik mielött a marker felhasználná -->
@@ -67,7 +69,7 @@
           mat-button
           (click)="addMarkerToGroup(group)"
           [ngStyle]="{'background-color': group.color}"
-          *ngFor="let group of placeGroup.placeGroups; index as i; trackBy:i">
+          *ngFor="let group of placeGroup.placeGroups; index as i; trackBy:trackby">
           {{group.title}}
         </button>
       </div>

@@ -1,10 +1,20 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import * as SnazzyInfoWindow from 'snazzy-info-window';
-import { WLPLaceGroup, WLPlace, WLPriceList } from '@wl-shared/list-types';
+import { WLPLaceGroup, WLPlace, WLPriceList } from '@wl-core/models/list-types';
 import { PlaceGroupComponent } from '@wl-shared/place-group/place-group.component';
-import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { WLValidators, WLErrorStateMatcher } from '@wl-core/validators';
+import { PriceGroupComponent } from '@wl-shared/price-group/price-group.component';
+import { TodoGroupComponent } from '@wl-shared/todo-group/todo-group.component';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Select } from '@ngxs/store';
+import { CurrentUserState } from '@wl-core/states/current-user.state';
+import { Observable } from 'rxjs';
+import { WlUser } from '@wl-core/models/user.model';
+import { take, tap } from 'rxjs/operators';
+import { PlanService } from '../plan/plan.service';
+import { WLPlan } from '../plan/plan.model';
+
 
 
 
@@ -18,8 +28,12 @@ import { AngularFirestore } from '@angular/fire/firestore';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlanningComponent implements OnInit, AfterViewInit {
+  @Select() currentUser$: Observable<WlUser.Min>;
   @ViewChild('mapRef', {static: true}) mapRef: ElementRef;
-  @ViewChild(PlaceGroupComponent, {static: true}) placeGroup: PlaceGroupComponent;
+  @ViewChild('placeGroupC', {static: true}) placeGroup: PlaceGroupComponent;
+  @ViewChild('priceGroupC', {static: true}) priceGroup: PriceGroupComponent;
+  @ViewChild('todoGroupC', {static: true}) todoGroup: TodoGroupComponent;
+  @ViewChild('cofferGroupC', {static: true}) cofferGroup: TodoGroupComponent;
   @ViewChild('infoWindowContent', {static: true}) infoWindowContent: ElementRef;
   @ViewChild('search', {static: true}) searchRef: ElementRef;
   map: google.maps.Map;
@@ -27,14 +41,12 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   placesService: google.maps.places.PlacesService;
   autocomplete: google.maps.places.Autocomplete;
   openedTab = 'places';
-  planTitle = 'New Plan'
+  planTitle = 'New Plan';
 
   metaDataFormGroup: FormGroup;
   metaDataMatcher = new WLErrorStateMatcher();
 
-  priceList = [new WLPriceList('Price List', [{name: 'aaaaaaaaaaaaaaaaaaaaa', price: 10}, {name: 'AFDG?MDSFÉ:', price: 123456789}])];
-
-  constructor(private changeDetector: ChangeDetectorRef, private fb: FormBuilder, private afs: AngularFirestore) {}
+  constructor(private changeDetector: ChangeDetectorRef, private fb: FormBuilder, private ps: PlanService) {}
 
 
   ngOnInit() {
@@ -42,6 +54,7 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       title: new FormControl('', WLValidators.name),
       start: null,
       end: null,
+      isPublic: null,
     });
     this.metaDataFormGroup.valueChanges.subscribe(value => value.title === '' ? this.planTitle = 'New Plan' : this.planTitle = value.title);
 
@@ -134,7 +147,7 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       marker,
       place,
       infoWindow
-    })
+    });
     this.marker.infoWindow.close();
     this.marker.marker.setPosition(null);
     group.renderRoute(false);
@@ -143,6 +156,18 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   }
 
   savePlan() {
-
+    const a = new WLPlan(
+      this.ps,
+      this.metaDataFormGroup.value.title,
+      this.map,
+      this.metaDataFormGroup.value.isPublic,
+      this.placeGroup.placeGroups,
+      this.todoGroup.todoGroups,
+      this.priceGroup.priceGroups,
+      this.cofferGroup.todoGroups,
+    );
+    a.save();
   }
+
+  trackby = (index: number, item) => item;
 }
