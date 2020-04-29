@@ -1,0 +1,39 @@
+@import '../../../theme/wl-breakpoints';
+@import '../../../theme/wl-colors';
+.map {
+  border: 2px solid #ffffff;
+}
+.info-window {
+  padding:20px;
+  font-size: 30px;
+  font-weight: 500;
+}
+.tabs {
+  display: flex;
+  background-color: #ffffff;
+  margin-bottom: 5px;
+  .tab {
+    cursor: pointer;
+    box-sizing: border-box;
+    text-align: center;
+    vertical-align: middle;
+    flex: 1 1 auto;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba($color: #000000, $alpha: .4);
+    &::selection {
+      color: none;
+      background: none;
+    }
+  /* For Mozilla Firefox */
+    &::-moz-selection {
+      color: none;
+      background: none;
+    }
+  }
+  .active-tab {
+    border-bottom: 4px solid $wl-primary;
+    color: #000000;
+  }
+}

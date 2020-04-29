@@ -1,4 +1,5 @@
 import * as SnazzyInfoWindow from 'snazzy-info-window';
+import { WLPlanTypes } from 'src/app/feature/plan/plan-type';
 
 export abstract class WLGenericList<T> {
   private _items: T[];
@@ -70,43 +71,34 @@ export class WLPriceList extends WLGenericList<WLIPice> {
 }
 
 export interface WLPlace {
-  place: google.maps.places.PlaceResult;
+  place: WLPlanTypes.Place.Place;
   marker: google.maps.Marker;
   infoWindow: SnazzyInfoWindow;
 }
 
-export class WLPLaceGroup extends WLGenericList<WLPlace> {
-  private _distanceService: google.maps.DistanceMatrixService;
-  private _directionsService: google.maps.DirectionsService;
-  private _directionsRenderer: google.maps.DirectionsRenderer;
-  private _color: string;
+export class WLPLaceList extends WLGenericList<WLPlace> {
+  distanceService: google.maps.DistanceMatrixService;
+  directionsService: google.maps.DirectionsService;
+  directionsRenderer: google.maps.DirectionsRenderer;
+  color: string;
   private _map: google.maps.Map;
   constructor(
     title: string,
     distanceService: google.maps.DistanceMatrixService,
     directionsRenderer: google.maps.DirectionsRenderer,
     directionsService: google.maps.DirectionsService,
-    items?: WLPlace[]) {
-      super(title, items);
-      this._distanceService = distanceService;
-      this._directionsRenderer = directionsRenderer;
-      this._directionsService = directionsService;
-      this._color = '#' + ('000000' + Math.floor(0x1000000 * Math.random()).toString(16)).slice(-6);
-      this._map = this._directionsRenderer === null ? null : this._directionsRenderer.getMap();
+    color: string = '#' + ('000000' + Math.floor(0x1000000 * Math.random()).toString(16)).slice(-6),
+    items: WLPlace[] = [],
+  ) {
+    super(title, items);
+    this.distanceService = distanceService;
+    this.directionsRenderer = directionsRenderer;
+    this.directionsService = directionsService;
+    this.color = color;
+    this._map = this.directionsRenderer === null ? null : this.directionsRenderer.getMap();
   }
-  get color() { return this._color; }
-  set color(color: string) {this._color = color; }
 
-  get directionsService() { return this._directionsService; }
-  set directionsService(directionsService: google.maps.DirectionsService) { this._directionsService = directionsService; }
-
-  get distanceService() { return this._distanceService; }
-  set distanceService(distanceService: google.maps.DistanceMatrixService) { this._distanceService = distanceService; }
-
-  get directionRenderer() { return this._directionsRenderer; }
-  set directionRenderer(directionsRenderer: google.maps.DirectionsRenderer) { this._directionsRenderer = directionsRenderer; }
-
-  public icon(color: string) {
+  public icon(color: string = this.color) {
     return {
       path: `M1708 6384 c-830 -107 -1503 -725 -1668 -1534 -28 -138 -35 -215 -35
       -395 0 -178 6 -245 37 -385 45 -210 107 -358 281 -670 162 -292 184 -329 473
@@ -125,35 +117,20 @@ export class WLPLaceGroup extends WLGenericList<WLPlace> {
     };
   }
 
-  addPlace(place: google.maps.places.PlaceResult) {
+  addPlace(place: WLPlanTypes.Place.Place) {
     const infoWindowContent =
-   `<div class="wrapper">
+   `<div>
       <div>
-        <span class="">${place.name}</span>
-        <span class="">Address: ${place.formatted_address}</span>
-        <span class="">Rating: ${place.rating}</span>
+        <span class="">Name: ${place.name}</span><br>
+        <span class="">Address: ${place.address}</span><br>
+        <span class="">Rating: ${place.rating}</span><br>
+        <span class="">Web: ${place.website}</span><br>
       </div>
     </div>`;
     const marker = new google.maps.Marker({
       map: this._map,
-      position: place.geometry.location,
-      /* ez az ikon trükkös dolog nagyon, scale nelkul be kell rakni eloszor megnezni a mereteket majd xre a szelesseg felet beirni.  */
-      icon: {
-        path: `M1708 6384 c-830 -107 -1503 -725 -1668 -1534 -28 -138 -35 -215 -35
-        -395 0 -178 6 -245 37 -385 45 -210 107 -358 281 -670 162 -292 184 -329 473
-        -776 364 -563 503 -799 662 -1120 204 -413 356 -822 462 -1247 28 -109 50
-        -207 50 -218 0 -36 17 -19 24 24 14 92 100 418 152 580 202 621 446 1101 972
-        1912 363 560 430 670 575 961 159 318 216 487 244 719 10 88 10 359 0 445 -12
-        107 -16 130 -48 260 -118 480 -453 926 -891 1184 -195 114 -451 207 -678 245
-        -36 6 -81 13 -100 16 -77 13 -407 12 -512 -1z`,
-        scale: 0.00655,
-        fillOpacity: 1,
-        fillColor: this.color,
-        rotation: 180,
-        scaledSize: new google.maps.Size(27, 43, 'pt', 'pt'),
-        anchor: new google.maps.Point(1971.5, 0),
-        labelOrigin: new google.maps.Point(2071.5, 3900)
-      },
+      position: place.loc,
+      icon: this.icon(),
       label: (this.items.length + 1).toString(),
     });
     const infoWindow = new SnazzyInfoWindow({
@@ -175,26 +152,25 @@ export class WLPLaceGroup extends WLGenericList<WLPlace> {
     return items;
   }
 
-  public renderRoute(fullyOptimised: boolean) {
-    this._directionsRenderer.setMap(null);
+  public renderRoute(fullyOptimised: boolean = false) {
+    this.directionsRenderer.setMap(null);
     if (this.items.length < 2) { return; }
     if (fullyOptimised) {
       /* TODO FULLI OPTIMISED ROUTE */
       return;
     } else {
-      const waypoints: google.maps.DirectionsWaypoint[] = [];
-      this.items.slice(1, this.items.length - 1).forEach(item => {
-        waypoints.push({location: item.place.geometry.location});
-      });
-      this._directionsService.route({
-        origin: this.items[0].place.geometry.location,
+      // tslint:disable-next-line: max-line-length
+      const waypoints: google.maps.DirectionsWaypoint[] = this.items.slice(1, this.items.length - 1)
+                                                          .map(item => ({location: new google.maps.LatLng(item.place.loc)}));
+      this.directionsService.route({
+        origin: this.items[0].place.loc,
         waypoints,
         optimizeWaypoints: true,
-        destination: this.items[this.items.length - 1].place.geometry.location,
+        destination: this.items[this.items.length - 1].place.loc,
         travelMode: google.maps.TravelMode.DRIVING,
       }, route => {
-        this._directionsRenderer.setMap(this._map);
-        this._directionsRenderer.setDirections(route);
+        this.directionsRenderer.setMap(this._map);
+        this.directionsRenderer.setDirections(route);
       });
     }
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
-import { WLPLaceGroup } from '@wl-core/models/list-types';
+import { WLPLaceList } from '@wl-core/models/list-types';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
@@ -20,14 +20,14 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlaceGroupComponent implements OnInit {
-  @Input() placeGroups: WLPLaceGroup[] = [];
+  @Input() placeGroups: WLPLaceList[] = [];
   @Input() wrapperClass = '';
   @Input() map: google.maps.Map;
   floatingPanel: {
     isOpen: boolean;
     caption: string;
     pos: {x: string, y: string},
-    group: WLPLaceGroup
+    group: WLPLaceList
     formControl: FormControl,
     matcher: ErrorStateMatcher,
     initColor: string,
@@ -62,7 +62,7 @@ export class PlaceGroupComponent implements OnInit {
     }
   }
 
-  drop(event: CdkDragDrop<WLPLaceGroup>) {
+  drop(event: CdkDragDrop<WLPLaceList>) {
     event.previousContainer === event.container ?
       moveItemInArray(event.container.data.items, event.previousIndex, event.currentIndex) :
       transferArrayItem(
@@ -85,7 +85,7 @@ export class PlaceGroupComponent implements OnInit {
     event.previousContainer.data.renderRoute(false);
   }
 
-  openFloatingPanel(event: MouseEvent, panelCaption: string, type: string, group?: WLPLaceGroup) {
+  openFloatingPanel(event: MouseEvent, panelCaption: string, type: string, group?: WLPLaceList) {
     this.floatingPanel.caption = panelCaption;
     this.floatingPanel.pos = this.setFloatingElementPosition(event);
     if (group) {
@@ -99,7 +99,7 @@ export class PlaceGroupComponent implements OnInit {
   addOrRename() {
     this.floatingPanel.group
     ? this.floatingPanel.group.title = this.floatingPanel.formControl.value
-    : this.placeGroups.push(new WLPLaceGroup(
+    : this.placeGroups.push(new WLPLaceList(
       this.floatingPanel.formControl.value,
       new google.maps.DistanceMatrixService(),
       new google.maps.DirectionsRenderer({map: this.map, suppressMarkers: true}),
@@ -137,11 +137,13 @@ export class PlaceGroupComponent implements OnInit {
       element.place = null,
       element.marker.setMap(null);
     });
+    this.placeGroups[index].directionsRenderer.setMap(null)
     this.placeGroups = [
       ...this.placeGroups.slice(0, index),
       ...this.placeGroups.slice(index + 1)
     ];
     this.floatingPanel.group = null;
+    this.changeDetector.detectChanges();
   }
 
   trackby = (index: number, item) => item;

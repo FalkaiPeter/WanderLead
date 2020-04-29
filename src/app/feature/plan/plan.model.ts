@@ -1,4 +1,4 @@
-import { WLPLaceGroup, WLTodoList, WLPriceList, WLITodo, WLIPice } from '@wl-core/models/list-types';
+import { WLPLaceList, WLTodoList, WLPriceList, WLITodo, WLIPice } from '@wl-core/models/list-types';
 import { PlanService } from './plan.service';
 import { WLPlanTypes } from './plan-type';
 
@@ -6,20 +6,24 @@ export class WLPlan {
   title: string;
   private _map: google.maps.Map;
   isPublic: boolean;
-  placeGroups: WLPLaceGroup[];
+  placeGroups: WLPLaceList[];
   todoGroups: WLTodoList[];
   priceGroups: WLPriceList[];
   cofferGroups: WLTodoList[];
+  start: string;
+  end: string;
 
   constructor(
     private planService: PlanService,
     title: string,
     map: google.maps.Map,
     isPublic: boolean = true,
-    placeGroups: WLPLaceGroup[] = [],
+    placeGroups: WLPLaceList[] = [],
     todoGroups: WLTodoList[] = [],
     priceGroups: WLPriceList[] = [],
     cofferGroups: WLTodoList[] = [],
+    start: string = null,
+    end: string = null,
   ) {
       this.title = title;
       this._map = map;
@@ -28,37 +32,36 @@ export class WLPlan {
       this.todoGroups = todoGroups;
       this.priceGroups = priceGroups;
       this.cofferGroups = cofferGroups;
+      this.start = start;
+      this.end = end;
   }
 
   save() {
-    const places: WLPlanTypes.Place.Group[] = [];
-    this.placeGroups.forEach(group => {
-      const groupPlaces: WLPlanTypes.Place.Place[] = [];
-      group.items.forEach(item => {
-        groupPlaces.push({
-          id: item.place.id,
-          address: item.place.formatted_address,
-          loc: {
-            lat: item.place.geometry.location.lat(),
-            lng: item.place.geometry.location.lng(),
-          },
-          name: item.place.name,
-          rating: item.place.rating,
-          website: item.place.website,
-        });
-      });
-      places.push({color: group.color, title: group.title, items: groupPlaces});
-    });
-
+    const places = this.placeGroups.map(group => ({color: group.color, title: group.title, items: group.items.map(item => item.place)}));
     const todos: WLPlanTypes.Todo[] = this.todoGroups.map(group => ({title: group.title, items: group.items}));
     const coffer: WLPlanTypes.Todo[] = this.cofferGroups.map(group => ({title: group.title, items: group.items}));
     const prices: WLPlanTypes.Price[] = this.priceGroups.map(group => ({title: group.title, sum: group.sum, items: group.items}));
+    return this.planService.save({title: this.title, places, todos, coffer, prices, start: this.start, end: this.end}, this.isPublic);
+  }
 
-    this.planService.save({title: this.title, places, todos, coffer, prices}, this.isPublic);
-
-
-
-
-
+  load(uid: string, planId: string, isPublic: boolean = true) {
+    return this.planService.load(uid, planId, isPublic).then( result => {
+      this.title = result.title;
+      result.prices.forEach(group => this.priceGroups.push(new WLPriceList(group.title, group.items)));
+      result.todos.forEach(group => this.todoGroups.push(new WLTodoList(group.title, group.items)));
+      result.coffer.forEach(group => this.cofferGroups.push(new WLTodoList(group.title, group.items)));
+      result.places.forEach(group => {
+        const g = new WLPLaceList(
+          group.title,
+          new google.maps.DistanceMatrixService(),
+          new google.maps.DirectionsRenderer({map: this._map, suppressMarkers: true}),
+          new google.maps.DirectionsService(),
+          group.color,
+        );
+        group.items.forEach(item => g.addPlace(item));
+        this.placeGroups.push(g);
+      });
+      this.isPublic = isPublic;
+    });
   }
 }

@@ -1,1 +1,34 @@
-<p>plan works!</p>
+<div class="map"  #mapRef [ngStyle]="{'height': mapHeight}"></div>
+
+<div class="tabs">
+  <span class="tab" [ngClass]="{'active-tab': openedTab === 'places' }" (click)="openedTab = 'places' ">Places</span>
+  <span class="tab" [ngClass]="{'active-tab': openedTab === 'prices' }" (click)="openedTab = 'prices' ">Prices</span>
+  <span class="tab" [ngClass]="{'active-tab': openedTab === 'todo' }" (click)="openedTab = 'todo' ">Todo</span>
+  <span class="tab" [ngClass]="{'active-tab': openedTab === 'coffer' }" (click)="openedTab = 'coffer' ">Coffer</span>
+</div>
+<app-place-group #placeGroupC [placeGroups]="plan.placeGroups" [map]='map' [hidden]="openedTab !== 'places' "></app-place-group>
+<app-price-group #priceGroupC [priceGroups]="plan.priceGroups" [hidden]="openedTab !== 'prices' "></app-price-group>
+<app-todo-group #todoGroupC [todoGroups]="plan.todoGroups" [hidden]="openedTab !== 'todo' "></app-todo-group>
+<app-todo-group #cofferGroupC [todoGroups]="plan.cofferGroups" [hidden]="openedTab !== 'coffer' "></app-todo-group>
+
+<!-- dinamikusan frissülő info window a markerhez,
+  jobb szeparalva tartani, minden egyéb kontent után, mert egy villanásra kirenderelődik mielött a marker felhasználná -->
+  <div class="info-window" #infoWindowContent>
+    <div *ngIf="marker.place">
+      <span class="" >Name: {{marker.place.name}}</span><br>
+      <span class="" >Address: {{marker.place.address}}</span><br>
+      <span class="" >Rating: {{marker.place.rating}}</span><br>
+      <span class="" >Web: {{marker.place.website}}</span><br>
+      <div class="buttons">
+        <span>Add to Group</span>
+        <button
+          mat-button
+          (click)="addMarkerToGroup(group)"
+          [ngStyle]="{'background-color': group.color}"
+          *ngFor="let group of placeGroup.placeGroups; index as i; trackBy:trackby">
+          {{group.title}}
+        </button>
+      </div>
+    </div>
+</div>
+

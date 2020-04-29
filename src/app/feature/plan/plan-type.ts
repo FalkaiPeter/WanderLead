@@ -32,6 +32,8 @@ export namespace WLPlanTypes {
   }
   export interface DBmodel {
     title: string;
+    start: string;
+    end: string;
     places: WLPlanTypes.Place.Group[];
     todos: WLPlanTypes.Todo[];
     coffer: WLPlanTypes.Todo[];

@@ -8,6 +8,7 @@ import { SharedModule } from '@wl-shared/shared.module';
 import { PlaceGroupModule } from '@wl-shared/place-group/place-group.module';
 import { TodoGroupModule } from '@wl-shared/todo-group/todo-group.module';
 import { PriceGroupModule } from '@wl-shared/price-group/price-group.module';
+import { PlanModule } from '../plan/plan.module';
 
 @NgModule({
   declarations: [PlanningComponent],
@@ -19,7 +20,8 @@ import { PriceGroupModule } from '@wl-shared/price-group/price-group.module';
     SharedModule,
     PlaceGroupModule,
     TodoGroupModule,
-    PriceGroupModule
+    PriceGroupModule,
+    PlanModule
   ]
 })
 export class PlanningModule { }

@@ -24,7 +24,7 @@ export class PriceGroupComponent implements AfterViewInit {
     matcher: WLErrorStateMatcher,
   };
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  constructor(public changeDetector: ChangeDetectorRef) {
     this.floatingPanel = {
       caption: '',
       isOpen: false,
@@ -70,10 +70,11 @@ export class PriceGroupComponent implements AfterViewInit {
   deleteGroup(index: number) {
     this.floatingPanel.isOpen = false;
     this.total -= this.priceGroups[index].sum;
-    return this.priceGroups = [
+    this.priceGroups = [
       ...this.priceGroups.slice(0, index),
       ...this.priceGroups.slice(index + 1)
     ];
+    this.changeDetector.detectChanges();
   }
 
   addItemToList(form: NgForm, index: number) {

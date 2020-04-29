@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
 import { WLTodoList } from '@wl-core/models/list-types';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormControl, Validators, NgForm } from '@angular/forms';
@@ -23,7 +23,7 @@ export class TodoGroupComponent implements OnInit {
     matcher: WLErrorStateMatcher,
   };
 
-  constructor() {
+  constructor(public changeDetector: ChangeDetectorRef) {
     this.floatingPanel = {
       caption: '',
       pos: {x: '', y: ''},
