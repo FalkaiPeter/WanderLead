@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { WlUser } from '@wl-core/models/user.model';
-import { firestore } from 'firebase/app';
+import {firestore} from 'firebase';
 
 @Injectable({
   providedIn: 'root'

@@ -17,7 +17,6 @@ const routes: Routes = [
     { path: 'home', loadChildren: () => import('./feature/home/home.module').then(m => m.HomeModule) },
     { path: 'profile', loadChildren: () => import('./feature/profile/profile.module').then(m => m.ProfileModule) },
     { path: 'discover', loadChildren: () => import('./feature/discover/discover.module').then(m => m.DiscoverModule) },
-    { path: 'planning', loadChildren: () => import('./feature/planning/planning.module').then(m => m.PlanningModule) },
     { path: '', redirectTo: 'home', pathMatch: 'full'},
   ]},
   // tslint:disable-next-line: max-line-length

@@ -1,18 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatButtonModule, MatInputModule, MatFormFieldModule, MatCheckboxModule, MatMenuModule, MatMenuTrigger} from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material';
-
-
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 
 
@@ -24,28 +19,30 @@ import { MatNativeDateModule } from '@angular/material';
     CommonModule,
     MatIconModule,
     MatBadgeModule,
+    MatProgressSpinnerModule,
     MatButtonModule,
     MatDialogModule,
+    MatTooltipModule,
+    MatDatepickerModule,
     MatInputModule,
     MatFormFieldModule,
     MatCheckboxModule,
     MatToolbarModule,
     MatMenuModule,
-    MatDatepickerModule,
-    MatNativeDateModule
   ],
   exports: [
     MatIconModule,
     MatBadgeModule,
+    MatProgressSpinnerModule,
     MatButtonModule,
     MatDialogModule,
+    MatTooltipModule,
+    MatDatepickerModule,
     MatInputModule,
     MatFormFieldModule,
     MatCheckboxModule,
     MatToolbarModule,
     MatMenuModule,
-    MatDatepickerModule,
-    MatNativeDateModule
   ]
 })
 export class MaterialModule { }

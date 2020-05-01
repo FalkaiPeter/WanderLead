@@ -7,9 +7,9 @@ import { AppComponent } from './root/app.component';
 import { ShellComponent } from './shell/shell.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NotificationComponent } from './nav/notification/notification.component';
+import { SharedModule } from '@wl-shared/shared.module';
 import { FooterComponent } from './footer/footer.component';
 import { SearchModule } from '../feature/search/search.module';
-import { SharedModule } from '@wl-shared/shared.module';
 
 
 @NgModule({
@@ -24,8 +24,8 @@ import { SharedModule } from '@wl-shared/shared.module';
   imports: [
     CommonModule,
     BlocksRoutingModule,
-    SearchModule,
-    SharedModule
+    SharedModule,
+    SearchModule
   ]
 })
 export class BlocksModule { }
