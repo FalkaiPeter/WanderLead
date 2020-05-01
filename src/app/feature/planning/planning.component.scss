@@ -1,0 +1,65 @@
+@import '../../../theme/wl-breakpoints';
+@import '../../../theme/wl-colors';
+:host {
+  width: 700px;
+  margin: auto;
+  display: block;
+  margin-bottom: 30px;
+
+}
+.title {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px;
+  text-transform: capitalize;
+  border-bottom: 1px solid rgba($color: #000000, $alpha: .2);
+  span:first-child {
+    flex: 1 1 auto;
+  }
+  button {
+    background-color: $wl-primary;
+    color: #ffffff;
+    height: 50%;
+    &:disabled {
+      background-color: rgba($color: $wl-primary, $alpha: .6);
+    }
+  }
+}
+
+.metadata {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-bottom: 1px solid rgba($color: #000000, $alpha: .2);
+
+}
+
+.search {
+  width: 100%;
+  background-color: #ffffff;
+  mat-form-field {
+    width: 80%;
+    margin: 0 10%;
+  }
+}
+
+
+@include media('<=phone') {
+  :host {
+    width: 100%;
+  }
+  .metadata {
+    flex-wrap: wrap;
+    .metadata-title{
+      width: 90%;
+    }
+    .metadata-date {
+      width: 30%
+    }
+  }
+}
+

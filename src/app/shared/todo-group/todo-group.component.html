@@ -1,0 +1,77 @@
+<div class="wrapper" cdkDropListGroup [ngClass]="[wrapperClass]">
+  <div class="group"
+    *ngFor="let group of todoGroups; index as i; trackBy:trackby"
+    cdkDropList
+    [cdkDropListData]="group"
+    (cdkDropListDropped)="drop($event)">
+
+    <div class="header">
+      <span class="title" >{{group.title}}</span>
+      <button mat-button [matMenuTriggerFor]="header_menu" class="header-menu-trigger"><mat-icon>more_horiz</mat-icon></button>
+    </div>
+
+    <mat-menu #header_menu="matMenu">
+      <button mat-menu-item (click)="openFloatingPanel($event, 'Change group title', group)">Change title</button>
+      <button mat-menu-item (click)="deleteGroup(i)">Delete group</button>
+    </mat-menu>
+
+    <form #f="ngForm" (ngSubmit)="addItemToList(f, i)" class="add-list-item">
+      <mat-form-field>
+        <input matInput type="text" name="todo" ngModel placeholder="Add item to list" required>
+      </mat-form-field>
+      <button mat-button>Add</button>
+    </form>
+
+
+
+    <div class="item-list" >
+      <div class="list-item" *ngFor="let item of group.items; index as j;" cdkDrag>
+        <span class="item-name" [ngStyle]="{'text-decoration': item.done? 'line-through' : 'none'}">
+          {{item.name}}
+        </span>
+        <mat-checkbox class="done" [checked]="item.done" (change)="item.done = !item.done"></mat-checkbox>
+        <button mat-button (click)="group.remove(j)"><mat-icon>close</mat-icon></button>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="add-group" mat-button (click)="openFloatingPanel($event, 'Add Group')"><mat-icon>add</mat-icon></button>
+
+  <div class="floating-panel"
+    style="position: absolute;"
+    [ngStyle]="{'top': floatingPanel.pos.y, left: floatingPanel.pos.x}"
+    *ngIf="floatingPanel.isOpen">
+    <div class="header">
+      <span class="title">{{floatingPanel.caption}}</span>
+      <button mat-button (click)="floatingPanel.isOpen = false; floatingPanel.formControl.reset()"><mat-icon>close</mat-icon></button>
+    </div>
+    <form  (ngSubmit)="addOrRename()">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          [formControl]="floatingPanel.formControl"
+          [errorStateMatcher]="floatingPanel.matcher"
+          placeholder="New group title"
+          name="title">
+        <mat-hint>2-20 character</mat-hint>
+        <mat-error *ngIf="floatingPanel.formControl.hasError('maxLength') && !floatingPanel.formControl.hasError('minLength') && !floatingPanel.formControl.hasError('required')">
+          Group name length must less than 20 character!
+        </mat-error>
+
+        <mat-error *ngIf="floatingPanel.formControl.hasError('minLength') && !floatingPanel.formControl.hasError('maxLength') && !floatingPanel.formControl.hasError('required')">
+          Group name length must more than 2 character!
+        </mat-error>
+
+        <mat-error *ngIf="floatingPanel.formControl.hasError('required')">
+          Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <button mat-button  [disabled]="floatingPanel.formControl.invalid">Save</button>
+    </form>
+
+
+  </div>
+
+</div>

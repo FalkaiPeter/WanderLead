@@ -29,7 +29,6 @@
     </div>
     <button class="follow-btn" *ngIf="profile.followed !== null" (click)="profile.followed ? unfollow() : follow()">{{ profile.followed ? 'Unfollow' : 'Follow'}}</button>
     <div class="map-container" *ngIf="mapOpened" [ngClass]="{'fullscreen-map': isFullscreen}">
-      <agm-map class="map" ></agm-map>
       <mat-icon class="fullscreen" *ngIf="isMobile$ | async" (click)="isFullscreen = !isFullscreen" >fullscreen</mat-icon>
       <mat-icon class="close" *ngIf="isFullscreen" (click)="isFullscreen = !isFullscreen">close</mat-icon>
     </div>
@@ -39,3 +38,6 @@
     </div>
   </div>
 </div>
+
+<div #asd></div>
+<button (click)="loadPlan()">load plan</button>
