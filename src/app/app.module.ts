@@ -20,7 +20,6 @@ import { BlocksModule } from '@wl-blocks/blocks.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    SharedModule,
     BlocksModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
