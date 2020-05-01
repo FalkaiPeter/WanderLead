@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ProfileStateModel } from '@wl-core/states/profile.state';
 import { WLPlan } from '../plan/plan.model';
 import { PlanService } from '../plan/plan.service';
 import { PlanComponent } from '../plan/plan.component';
 import { MatAccordion } from '@angular/material';
+import { WLProfileActions } from '@wl-core/actions/profile.actions';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class ProfileComponent implements OnInit {
   map: google.maps.Map;
   plan: WLPlan;
 
-  constructor() {
+  constructor(private store: Store) {
   }
 
 
@@ -28,7 +29,12 @@ export class ProfileComponent implements OnInit {
     this.map = new google.maps.Map(this.mapref.nativeElement, {zoom: 12, center: {lat: 46, lng: 21}});
   }
 
-  follow() {}
-  unfollow() {}
+  follow() {
+    this.store.dispatch(new WLProfileActions.Set.Followed(true));
+  }
+
+  unfollow() {
+    this.store.dispatch(new WLProfileActions.Set.Followed(false));
+  }
 
 }
