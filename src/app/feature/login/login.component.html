@@ -4,13 +4,13 @@
   <!-- TITLE -->
   <span class="title">SIGN IN</span>
 
-  <form (ngSubmit)="authservice.signIn(loginFormControl)" class="login-form">
+  <form #l="ngForm" (ngSubmit)="authservice.signIn(l)" class="login-form">
 
 
     <!-- EMAIL -->
     <mat-form-field >
       <mat-label>Email</mat-label>
-      <input matInput name="email" type="email" [formControl]="loginFormControl" [errorStateMatcher]="matcher" placeholder="user@example.com">
+      <input matInput name="email" ngModel [formControl]="loginFormControl" [errorStateMatcher]="matcher" placeholder="user@example.com">
       <!-- ERROR HANDLER NOT VALID INPUT-->
       <mat-error *ngIf="loginFormControl.hasError('email') && !loginFormControl.hasError('required')">
         Please enter a valid email address
