@@ -6,7 +6,7 @@ import { ProfileComponent } from './profile.component';
 import { NgxsModule } from '@ngxs/store';
 import { ProfileState } from '@wl-core/states/profile.state';
 import { SharedModule } from '@wl-shared/shared.module';
-import { AgmCoreModule } from '@agm/core';
+import { PlanModule } from '../plan/plan.module';
 
 
 @NgModule({
@@ -16,7 +16,7 @@ import { AgmCoreModule } from '@agm/core';
     CommonModule,
     ProfileRoutingModule,
     SharedModule,
-    AgmCoreModule,
+    PlanModule,
   ]
 })
 export class ProfileModule { }
