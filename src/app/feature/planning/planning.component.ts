@@ -15,6 +15,7 @@ import { take, tap } from 'rxjs/operators';
 import { PlanService } from '../plan/plan.service';
 import { WLPlan } from '../plan/plan.model';
 import { PlanComponent } from '../plan/plan.component';
+import * as moment from 'moment';
 
 
 
@@ -31,6 +32,7 @@ import { PlanComponent } from '../plan/plan.component';
 export class PlanningComponent implements OnInit, AfterViewInit {
   @ViewChild(PlanComponent, {static: true}) plan: PlanComponent;
   @ViewChild('search', {static: true}) searchRef: ElementRef;
+  mobile = window.outerWidth <= 425 ? true : false;
 
 
   autocomplete: google.maps.places.Autocomplete;
@@ -50,6 +52,7 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       end: null,
       isPublic: false,
     });
+    console.log(moment('2016-01-01 12:25:32', moment.ISO_8601))
     this.metaDataFormGroup.valueChanges.subscribe(value => value.title === '' ? this.planTitle = 'New Plan' : this.planTitle = value.title);
     this.autocomplete = new google.maps.places.Autocomplete(this.searchRef.nativeElement);
   }

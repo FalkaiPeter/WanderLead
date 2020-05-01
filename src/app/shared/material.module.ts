@@ -10,7 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 
 
@@ -32,7 +34,9 @@ import { MatNativeDateModule } from '@angular/material';
     MatToolbarModule,
     MatMenuModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatTabsModule,
+    MatExpansionModule,
+    MatMomentDateModule
   ],
   exports: [
     MatIconModule,
@@ -45,7 +49,9 @@ import { MatNativeDateModule } from '@angular/material';
     MatToolbarModule,
     MatMenuModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatTabsModule,
+    MatExpansionModule,
+    MatMomentDateModule
   ]
 })
 export class MaterialModule { }

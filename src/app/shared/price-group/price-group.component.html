@@ -8,7 +8,7 @@
 
     <div class="header">
       <span class="title" >{{group.title}}</span>
-      <button mat-button [matMenuTriggerFor]="header_menu" class="header-menu-trigger"><mat-icon>more_horiz</mat-icon></button>
+      <button *ngIf="editable" mat-button [matMenuTriggerFor]="header_menu" class="header-menu-trigger"><mat-icon>more_horiz</mat-icon></button>
     </div>
 
     <mat-menu #header_menu="matMenu">
@@ -16,7 +16,7 @@
       <button mat-menu-item (click)="deleteGroup(i)">Delete group</button>
     </mat-menu>
 
-    <form #f="ngForm" (ngSubmit)="addItemToList(f, i)" class="add-list-item">
+    <form *ngIf="editable" #f="ngForm" (ngSubmit)="addItemToList(f, i)" class="add-list-item">
       <mat-form-field class="add-name">
         <input matInput type="text" name="name" ngModel placeholder="Add item to list" required>
       </mat-form-field>
@@ -35,7 +35,7 @@
         <span class="item-price">
           {{item.price}}
         </span>
-        <button mat-button (click)="group.remove(j); total = (total - item.price)"><mat-icon>close</mat-icon></button>
+        <button *ngIf="editable" mat-button (click)="group.remove(j); total = (total - item.price)"><mat-icon>close</mat-icon></button>
       </div>
     </div>
 
@@ -43,7 +43,7 @@
 
   </div>
   <br>
-  <button class="add-group" mat-button (click)="openFloatingPanel($event, 'Add Group')"><mat-icon>add</mat-icon></button>
+  <button *ngIf="editable" class="add-group" mat-button (click)="openFloatingPanel($event, 'Add Group')"><mat-icon>add</mat-icon></button>
 
   <div class="floating-panel"
     style="position: absolute;"

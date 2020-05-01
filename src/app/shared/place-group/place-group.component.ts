@@ -20,6 +20,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlaceGroupComponent implements OnInit {
+  @Input() editable: boolean = false;
   @Input() placeGroups: WLPLaceList[] = [];
   @Input() wrapperClass = '';
   @Input() map: google.maps.Map;

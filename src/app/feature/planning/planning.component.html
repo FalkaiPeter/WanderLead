@@ -22,14 +22,14 @@
     <mat-label>Start date</mat-label>
     <input matInput [matDatepicker]="start" formControlName="start">
     <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-    <mat-datepicker #start></mat-datepicker>
+    <mat-datepicker #start [touchUi]="mobile"></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field appearance="legacy" class="metadata-date">
     <mat-label>End date</mat-label>
     <input matInput [matDatepicker]="end" formControlName="end">
     <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-    <mat-datepicker #end></mat-datepicker>
+    <mat-datepicker #end [touchUi]="mobile"></mat-datepicker>
   </mat-form-field>
 
   <mat-checkbox formControlName="isPublic">Public</mat-checkbox>
@@ -43,7 +43,7 @@
   </mat-form-field>
 </form>
 
-<app-plan></app-plan>
+<app-plan [editable]="true"></app-plan>
 
 
 

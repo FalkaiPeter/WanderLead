@@ -1,43 +1,45 @@
-<div class="container" *ngIf="(profile$ | async) as profile" [ngClass]="{'mobile': isMobile$|async}">
-
-  <div class="profile-info" *ngIf="profile.user !== null">
-    <img src="{{profile.user.photoURL}}" alt="photo" class="photo">
-
-    <span class="name">{{profile.user.displayName}}</span>
-    <div class="stats">
-      <div class="stat">
-        <span class="type">Trips</span>
-        <br>
-        <span class="count">{{profile.user.trips}}</span>
-      </div>
-
-      <div class="stat">
-        <span class="type">Followers</span>
-        <br>
-        <span class="count">{{profile.user.followers}}</span>
-      </div>
-
-      <div class="stat">
-        <span class="type">Followings</span>
-        <br>
-        <span class="count">{{profile.user.followings}}</span>
+<div class="profile-data-container">
+  <div class="map" #mapRef></div>
+  <ng-container *ngIf="(profile$ | async) as profile">
+    <div class="profile" *ngIf="profile.user !== null">
+      <img src="{{profile.user.photoURL}}" alt="profile-photo" class="photo">
+      <div class="data">
+        <ul>
+          <li class="name">{{profile.user.displayName}}</li>
+          <li class="stats">followers<br>{{profile.user.followers}}</li>
+          <li class="stats">followings<br>{{profile.user.followings}}</li>
+          <li class="stats">trips<br>{{profile.user.trips}}</li>
+          <li *ngIf="profile.followed !== null"><button mat-button class="follow-btn" (click)="profile.followed ? unfollow() : follow()">{{ profile.followed ? 'Unfollow' : 'Follow'}}</button></li>
+        </ul>
       </div>
     </div>
-    <div class="buttons">
-      <mat-icon class="map-btn" (click)="openMap()" [ngClass]="{'active-btn': mapOpened}">map</mat-icon>
-      <mat-icon class="about-btn" (click)="openAbout()" [ngClass]="{'active-btn': aboutOpened}">help_outline</mat-icon>
-    </div>
-    <button class="follow-btn" *ngIf="profile.followed !== null" (click)="profile.followed ? unfollow() : follow()">{{ profile.followed ? 'Unfollow' : 'Follow'}}</button>
-    <div class="map-container" *ngIf="mapOpened" [ngClass]="{'fullscreen-map': isFullscreen}">
-      <mat-icon class="fullscreen" *ngIf="isMobile$ | async" (click)="isFullscreen = !isFullscreen" >fullscreen</mat-icon>
-      <mat-icon class="close" *ngIf="isFullscreen" (click)="isFullscreen = !isFullscreen">close</mat-icon>
-    </div>
-    <div class="about" *ngIf="aboutOpened">
-      <span>bio</span>
-      <span class="bio">{{profile.user.bio}}</span>
-    </div>
-  </div>
+  </ng-container>
 </div>
 
-<div #asd></div>
-<button (click)="loadPlan()">load plan</button>
+<div class="actions" *ngIf="(profile$ | async).user as user">
+  <mat-tab-group [dynamicHeight]="true" [animationDuration]="'0ms'">
+    <mat-tab label="Bio"> {{user.bio}} </mat-tab>
+    <mat-tab label="Plans">
+
+      <mat-accordion #acc [displayMode]="'flat'">
+        <mat-expansion-panel *ngFor="let plan of user.plans" (afterExpand)="i.loadPlan(user.uid, plan.id)">
+
+          <mat-expansion-panel-header  >
+            <mat-panel-title>
+              {{plan.name}}
+            </mat-panel-title>
+            <mat-panel-description *ngIf="plan.start && plan.end">
+              {{plan.start}} - {{plan.end}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <!-- CONTENT -->
+            <app-plan #i></app-plan>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+
+    </mat-tab>
+    <mat-tab label="Trips" [disabled]="true"> Content 3 </mat-tab>
+  </mat-tab-group>
+</div>
+

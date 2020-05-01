@@ -15,6 +15,7 @@ import { FormGroup } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlanComponent implements OnInit {
+  @Input() editable: boolean = false;
   @Input() mapHeight: string = '500px';
   @Input() plan: WLPlan;
   @ViewChild('mapRef', {static: true}) mapRef: ElementRef;
@@ -29,16 +30,6 @@ export class PlanComponent implements OnInit {
   openedTab = 'places';
 
   constructor(public changeDetector: ChangeDetectorRef, private ps: PlanService) {
-    if(this.plan === undefined)
-      this.plan = new WLPlan(
-        this.ps,
-        undefined,
-        this.map,
-        undefined,
-        [],
-        [],
-        [],
-      );
    }
 
   ngOnInit() {
@@ -51,6 +42,16 @@ export class PlanComponent implements OnInit {
       closeWhenOthersOpen: true,
       wrapperClass: 'info-window',
     });
+    if(this.plan === undefined)
+    this.plan = new WLPlan(
+      this.ps,
+      undefined,
+      this.map,
+      undefined,
+      [],
+      [],
+      [],
+    );
 
     this.map.addListener('click', (event: any) => {
       event.stop();
@@ -106,6 +107,18 @@ export class PlanComponent implements OnInit {
       this.marker.place = null;
       form.reset();
       form.setValue({title: 'New Plan', start: null, end: null, isPublic: false});
+    });
+  }
+
+  loadPlan(uid: string, planId: string, isPublic: boolean = true) {
+    this.plan.load(uid, planId, isPublic)
+    .then(() => {
+      this.changeDetector.detectChanges();
+      this.priceGroup.total = 0;
+      this.priceGroup.priceGroups.forEach(group => this.priceGroup.total += group.sum);
+      this.cofferGroup.changeDetector.detectChanges();
+      this.todoGroup.changeDetector.detectChanges();
+      this.priceGroup.changeDetector.detectChanges();
     });
   }
 }

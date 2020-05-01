@@ -11,6 +11,7 @@ import { WLValidators, WLErrorStateMatcher } from '@wl-core/validators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoGroupComponent implements OnInit {
+  @Input() editable: boolean = false;
   @Input() todoGroups: WLTodoList[] = [];
   @Input() wrapperClass: string = '';
 

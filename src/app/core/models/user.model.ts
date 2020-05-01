@@ -1,4 +1,6 @@
 
+import { Moment } from 'moment';
+
 export namespace WlUser {
   export interface Min {
     uid: string;
@@ -11,6 +13,7 @@ export namespace WlUser {
     followings: number;
     trips: number;
     bio: string;
+    plans: {name: string, id: string, start: string, end: string} [];
   }
 
   export interface Social {

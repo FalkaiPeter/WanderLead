@@ -7,7 +7,7 @@
 
     <div class="header">
       <span class="title" >{{group.title}}</span>
-      <button mat-button [matMenuTriggerFor]="header_menu" class="header-menu-trigger"><mat-icon>more_horiz</mat-icon></button>
+      <button *ngIf="editable" mat-button [matMenuTriggerFor]="header_menu" class="header-menu-trigger"><mat-icon>more_horiz</mat-icon></button>
     </div>
 
     <mat-menu #header_menu="matMenu">
@@ -15,7 +15,7 @@
       <button mat-menu-item (click)="deleteGroup(i)">Delete group</button>
     </mat-menu>
 
-    <form #f="ngForm" (ngSubmit)="addItemToList(f, i)" class="add-list-item">
+    <form *ngIf="editable" #f="ngForm" (ngSubmit)="addItemToList(f, i)" class="add-list-item">
       <mat-form-field>
         <input matInput type="text" name="todo" ngModel placeholder="Add item to list" required>
       </mat-form-field>
@@ -26,17 +26,17 @@
 
     <div class="item-list" >
       <div class="list-item" *ngFor="let item of group.items; index as j;" cdkDrag>
-        <span class="item-name" [ngStyle]="{'text-decoration': item.done? 'line-through' : 'none'}">
+        <span class="item-name" [ngStyle]="{'text-decoration': (item.done && editable) ? 'line-through' : 'none' }">
           {{item.name}}
         </span>
-        <mat-checkbox class="done" [checked]="item.done" (change)="item.done = !item.done"></mat-checkbox>
-        <button mat-button (click)="group.remove(j)"><mat-icon>close</mat-icon></button>
+        <mat-checkbox *ngIf="editable" class="done" [checked]="item.done" (change)="item.done = !item.done"></mat-checkbox>
+        <button *ngIf="editable" mat-button (click)="group.remove(j)"><mat-icon>close</mat-icon></button>
       </div>
     </div>
 
   </div>
 
-  <button class="add-group" mat-button (click)="openFloatingPanel($event, 'Add Group')"><mat-icon>add</mat-icon></button>
+  <button *ngIf="editable" class="add-group" mat-button (click)="openFloatingPanel($event, 'Add Group')"><mat-icon>add</mat-icon></button>
 
   <div class="floating-panel"
     style="position: absolute;"
