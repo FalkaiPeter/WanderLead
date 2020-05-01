@@ -1,6 +1,8 @@
 import { WLPLaceList, WLTodoList, WLPriceList, WLITodo, WLIPice } from '@wl-core/models/list-types';
 import { PlanService } from './plan.service';
 import { WLPlanTypes } from './plan-type';
+import { Moment } from 'moment';
+import * as moment from 'moment';
 
 export class WLPlan {
   title: string;
@@ -10,8 +12,8 @@ export class WLPlan {
   todoGroups: WLTodoList[];
   priceGroups: WLPriceList[];
   cofferGroups: WLTodoList[];
-  start: string;
-  end: string;
+  start: Moment;
+  end: Moment;
 
   constructor(
     private planService: PlanService,
@@ -22,8 +24,8 @@ export class WLPlan {
     todoGroups: WLTodoList[] = [],
     priceGroups: WLPriceList[] = [],
     cofferGroups: WLTodoList[] = [],
-    start: string = null,
-    end: string = null,
+    start: Moment = moment(),
+    end: Moment = moment(),
   ) {
       this.title = title;
       this._map = map;
@@ -41,12 +43,32 @@ export class WLPlan {
     const todos: WLPlanTypes.Todo[] = this.todoGroups.map(group => ({title: group.title, items: group.items}));
     const coffer: WLPlanTypes.Todo[] = this.cofferGroups.map(group => ({title: group.title, items: group.items}));
     const prices: WLPlanTypes.Price[] = this.priceGroups.map(group => ({title: group.title, sum: group.sum, items: group.items}));
-    return this.planService.save({title: this.title, places, todos, coffer, prices, start: this.start, end: this.end}, this.isPublic);
+    return this.planService
+    .save(
+      {
+        title: this.title,
+        places,
+        todos,
+        coffer,
+        prices,
+        start: this.start === null ? null : this.start.toISOString(),
+        end: this.end === null ? null : this.end.toISOString()
+      },
+      this.isPublic);
   }
 
   load(uid: string, planId: string, isPublic: boolean = true) {
+    this.placeGroups.forEach(group => {
+      group.items.forEach(() => group.remove(0));
+    })
+    this.placeGroups = [];
+    this.priceGroups = [];
+    this.todoGroups = [];
+    this.cofferGroups = [];
     return this.planService.load(uid, planId, isPublic).then( result => {
       this.title = result.title;
+      this.end = moment(result.end);
+      this.start = moment(result.start);
       result.prices.forEach(group => this.priceGroups.push(new WLPriceList(group.title, group.items)));
       result.todos.forEach(group => this.todoGroups.push(new WLTodoList(group.title, group.items)));
       result.coffer.forEach(group => this.cofferGroups.push(new WLTodoList(group.title, group.items)));

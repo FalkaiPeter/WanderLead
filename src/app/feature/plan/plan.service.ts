@@ -5,6 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { WlUser } from '@wl-core/models/user.model';
 import { CurrentUserState } from '@wl-core/states/current-user.state';
+import {firestore} from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,22 @@ export class PlanService {
 
   async save(plan: WLPlanTypes.DBmodel, isPublic: boolean = true): Promise<string>{
     const user = this.store.selectSnapshot(CurrentUserState);
-    return await (await this.afs.firestore.collection(`Plans/${user.uid}/${isPublic ? 'public' : 'private'}`).add(plan)).id;
+    const batch = this.afs.firestore.batch();
+    const planId = this.afs.createId();
+
+    batch.set(
+      this.afs.firestore
+      .collection(`Plans/${user.uid}/${isPublic ? 'public' : 'private'}`)
+      .doc(planId)
+      , plan
+    );
+    if ( isPublic)
+      batch.update(
+        this.afs.firestore
+        .doc(`Users/${user.uid}/other/public`)
+        , {plans: firestore.FieldValue.arrayUnion({name: plan.title, id: planId, start: plan.start, end: plan.end})}
+      );
+    return batch.commit().then(() => planId).catch((error) => {console.log(error); return null; });
 
 
   }

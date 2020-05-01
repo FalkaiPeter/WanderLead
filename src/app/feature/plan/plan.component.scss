@@ -4,9 +4,25 @@
   border: 2px solid #ffffff;
 }
 .info-window {
-  padding:20px;
-  font-size: 30px;
-  font-weight: 500;
+  padding:5px;
+  .iw-data {
+    display: block;
+    margin: 5px 0;
+  }
+  .iw-name {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .buttons {
+    margin-top: 10px;
+    .text {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+  }
+
 }
 .tabs {
   display: flex;

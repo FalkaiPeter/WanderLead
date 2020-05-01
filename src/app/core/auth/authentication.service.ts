@@ -64,7 +64,7 @@ export class AuthenticationService {
 
     batch.set(baseRef.ref, {uid, displayName, photoURL});
     batch.set(privateRef.ref, {uid, email});
-    batch.set(publicRef.ref, {uid, displayName, photoURL, followers: 0, followings: 0, trips: 0, bio: ''});
+    batch.set(publicRef.ref, {uid, displayName, photoURL, followers: 0, followings: 0, trips: 0, bio: '', plans: []});
     return batch.commit().catch(error => console.log(error));
   }
 
