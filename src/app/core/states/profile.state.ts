@@ -3,6 +3,7 @@ import { State, Action, StateContext, Store } from '@ngxs/store';
 import { WLProfileActions } from '@wl-core/actions/profile.actions';
 import { UserService } from '@wl-shared/services/user/user.service';
 import { CurrentUserState } from './current-user.state';
+import * as moment from 'moment';
 
 export interface ProfileStateModel {
   user: WlUser.Public;
@@ -28,6 +29,10 @@ export class ProfileState {
   @Action(WLProfileActions.Set.ByID)
   async setByID(state: StateContext<ProfileStateModel>, { uid }: WLProfileActions.Set.ByID) {
     const user = await this.userService.setById(uid);
+    user.plans.forEach(plan =>{
+      plan.start = moment.utc(plan.start).format('YYYY.MM.DD UTC');
+      plan.end = moment.utc(plan.end).format('YYYY.MM.DD UTC');
+    })
     return state.patchState({...state, user});
   }
 

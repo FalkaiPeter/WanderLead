@@ -140,6 +140,7 @@ export class WLPLaceList extends WLGenericList<WLPlace> {
       wrapperClass: 'info-window',
     });
     super.add({place, infoWindow, marker});
+    this.renderRoute();
   }
 
   remove(index: number) {

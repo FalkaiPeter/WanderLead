@@ -25,7 +25,7 @@ import { NgAisModule } from 'angular-instantsearch';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     NgAisModule.forRoot(),
     NgxsModule.forRoot([CurrentUserState, NotificationState], { developmentMode: !environment.production }), // initial states
-    //NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
 
 })
