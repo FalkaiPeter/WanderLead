@@ -11,6 +11,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PriceGroupComponent implements AfterViewInit {
+  @Input() editable: boolean = false;
   @Input() priceGroups: WLPriceList[] = [];
   @Input() wrapperClass: string = '';
   total = 0;

@@ -1,35 +1,36 @@
 <div class="wrapper" cdkDropListGroup [ngClass]="[wrapperClass]">
   <div class="group"
-    *ngFor="let group of placeGroups; let i = index; trackBy:trackby"
+    *ngFor="let group of placeGroups; let i = index"
     cdkDropList
     [cdkDropListData]="group"
     (cdkDropListDropped)="drop($event)">
 
-    <div class="header">
-      <span class="title" [ngStyle]="{'color': group.color}">{{group.title}}</span>
-      <button mat-button [matMenuTriggerFor]="loc_header_menu" class="header-menu-trigger"><mat-icon>more_horiz</mat-icon></button>
-    </div>
-
-    <mat-menu #loc_header_menu="matMenu">
+    <mat-menu #loc_header_menu="matMenu" >
       <button mat-menu-item (click)="openFloatingPanel($event, 'Change color', 'color', group)">change color</button>
       <button mat-menu-item (click)="openFloatingPanel($event, 'Change title', 'name', group)">change title</button>
       <button mat-menu-item [disabled]="true">optimalise route</button>
       <button mat-menu-item (click)="deleteGroup(i)">delete group</button>
     </mat-menu>
 
+    <div class="header">
+      <span class="title" [ngStyle]="{'color': group.color}">{{group.title}}</span>
+      <button *ngIf="editable" mat-button [matMenuTriggerFor]="loc_header_menu" class="header-menu-trigger"><mat-icon>more_horiz</mat-icon></button>
+    </div>
+
+
 
 
     <div class="item-list" >
-      <div (click)="item.infoWindow.open()" class="list-item" *ngFor="let item of group.items; index as j;" cdkDrag>
+      <div (click)="item.infoWindow.open()" class="list-item" *ngFor="let item of group.items; index as j;" cdkDrag [cdkDragDisabled]="!editable">
         <span class="item-name">
           {{j + 1}}. {{item.place.name}}
         </span>
-        <button mat-button (click)="group.remove(j); changeDetector.detectChanges()"><mat-icon>close</mat-icon></button>
+        <button *ngIf="editable" mat-button (click)="group.remove(j); changeDetector.detectChanges()"><mat-icon>close</mat-icon></button>
       </div>
     </div>
 
   </div>
-  <button class="add-group" mat-button (click)="openFloatingPanel($event, 'Add new group', 'name')"><mat-icon>add</mat-icon></button>
+  <button *ngIf="editable" class="add-group" mat-button (click)="openFloatingPanel($event, 'Add new group', 'name')"><mat-icon>add</mat-icon></button>
 
 
   <div class="floating-panel"
