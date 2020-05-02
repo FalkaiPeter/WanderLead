@@ -13,7 +13,7 @@ const canActivate = (authGuardPipe: AuthPipe | AuthPipeGenerator) => ({
 
 
 const routes: Routes = [
-  { path: '', component: ShellComponent,...canActivate(redirectUnauthorizedToLogin), children: [
+  { path: '', component: ShellComponent, ...canActivate(redirectUnauthorizedToLogin), children: [
     { path: 'home', loadChildren: () => import('./feature/home/home.module').then(m => m.HomeModule) },
     { path: 'profile', loadChildren: () => import('./feature/profile/profile.module').then(m => m.ProfileModule) },
     { path: 'discover', loadChildren: () => import('./feature/discover/discover.module').then(m => m.DiscoverModule) },
