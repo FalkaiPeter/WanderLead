@@ -1,6 +1,6 @@
 <div class="title">
   <span>{{planTitle}}</span>
-  <button mat-button [disabled]="metaDataFormGroup.invalid" color="primary" (click)="plan.save(metaDataFormGroup)">Save</button>
+  <button mat-button [disabled]="metaDataFormGroup.invalid" color="primary" (click)="plan.save(metaDataFormGroup, routerData ? routerData.id : null)">Save</button>
 </div>
 <form class="metadata" [formGroup]="metaDataFormGroup">
 

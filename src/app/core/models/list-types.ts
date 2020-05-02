@@ -119,12 +119,12 @@ export class WLPLaceList extends WLGenericList<WLPlace> {
 
   addPlace(place: WLPlanTypes.Place.Place) {
     const infoWindowContent =
-   `<div>
+   `<div style="padding:5px;">
       <div>
-        <span class="">Name: ${place.name}</span><br>
-        <span class="">Address: ${place.address}</span><br>
-        <span class="">Rating: ${place.rating}</span><br>
-        <span class="">Web: ${place.website}</span><br>
+        <span style="display: block; margin: 5px 0; font-size: 16px; font-weight: 500; margin-bottom: 10px;"> ${place.name}</span>
+        <span style="display: block; margin: 5px 0; ">Address: ${place.address}</span>
+        ${place.rating ? `<span style="display: block; margin: 5px 0; ">Rating: ${place.rating}</span>` : '' }
+        ${place.website ? `<span style="display: block; margin: 5px 0; "><a href="${place.website}">Website</a></span>` : '' }
       </div>
     </div>`;
     const marker = new google.maps.Marker({
@@ -137,7 +137,7 @@ export class WLPLaceList extends WLGenericList<WLPlace> {
       marker,
       content: infoWindowContent,
       closeWhenOthersOpen: true,
-      wrapperClass: 'info-window',
+
     });
     super.add({place, infoWindow, marker});
     this.renderRoute();

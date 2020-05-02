@@ -16,6 +16,8 @@ import { PlanService } from '../plan/plan.service';
 import { WLPlan } from '../plan/plan.model';
 import { PlanComponent } from '../plan/plan.component';
 import * as moment from 'moment';
+import { Router } from '@angular/router';
+import { WLPlanTypes } from '../plan/plan-type';
 
 
 
@@ -33,6 +35,11 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   @ViewChild(PlanComponent, {static: true}) plan: PlanComponent;
   @ViewChild('search', {static: true}) searchRef: ElementRef;
   mobile = window.outerWidth <= 425 ? true : false;
+  routerData: {
+    data: WLPlanTypes.DBmodel;
+    isPublic: boolean;
+    id: string;
+  }
 
 
   autocomplete: google.maps.places.Autocomplete;
@@ -42,7 +49,15 @@ export class PlanningComponent implements OnInit, AfterViewInit {
   metaDataFormGroup: FormGroup;
   metaDataMatcher = new WLErrorStateMatcher();
 
-  constructor(private changeDetector: ChangeDetectorRef, private fb: FormBuilder, private ps: PlanService) {}
+  constructor(private changeDetector: ChangeDetectorRef, private fb: FormBuilder, private ps: PlanService, private router: Router) {
+    this.router.getCurrentNavigation().extras.state !== undefined
+    ? this.routerData = {
+        data: this.router.getCurrentNavigation().extras.state.data,
+        isPublic: this.router.getCurrentNavigation().extras.state.isPublic,
+        id: this.router.routerState.snapshot.url.split('/')[2]
+      }
+    : this.routerData = null;
+  }
 
 
   ngOnInit() {
@@ -52,12 +67,23 @@ export class PlanningComponent implements OnInit, AfterViewInit {
       end: null,
       isPublic: false,
     });
-    console.log(moment('2016-01-01 12:25:32', moment.ISO_8601))
     this.metaDataFormGroup.valueChanges.subscribe(value => value.title === '' ? this.planTitle = 'New Plan' : this.planTitle = value.title);
     this.autocomplete = new google.maps.places.Autocomplete(this.searchRef.nativeElement);
   }
 
   ngAfterViewInit() {
+    if(this.routerData) {
+      this.plan.plan.loadFromDbModel(this.routerData.data, this.routerData.isPublic);
+      this.metaDataFormGroup.setValue({title: this.plan.plan.title, start: this.plan.plan.start, end: this.plan.plan.end, isPublic: this.plan.plan.isPublic})
+      this.plan.changeDetector.detectChanges();
+      this.plan.priceGroup.total = 0;
+      this.plan.priceGroup.priceGroups.forEach(group => this.plan.priceGroup.total += group.sum);
+      this.plan.cofferGroup.changeDetector.detectChanges();
+      this.plan.todoGroup.changeDetector.detectChanges();
+      this.plan.priceGroup.changeDetector.detectChanges();
+      this.changeDetector.detectChanges();
+    }
+
     this.autocomplete.addListener('place_changed', () => {
       const place = this.autocomplete.getPlace();
       this.plan.marker.infoWindow.close();

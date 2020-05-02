@@ -2,9 +2,9 @@
 @import '../../../theme/wl-colors';
 :host {
   width: 700px;
-  margin: auto;
+  margin: 20px auto 30px auto;
   display: block;
-  margin-bottom: 30px;
+
 
 }
 .title {
@@ -35,6 +35,7 @@
   justify-content: space-evenly;
   align-items: center;
   border-bottom: 1px solid rgba($color: #000000, $alpha: .2);
+  padding-top: 10px;
 
 }
 
@@ -51,6 +52,7 @@
 @include media('<=phone') {
   :host {
     width: 100%;
+    margin-top: 0;
   }
   .metadata {
     flex-wrap: wrap;
