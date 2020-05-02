@@ -1,0 +1,12 @@
+@import '../../../theme/wl-breakpoints';
+
+:host {
+  width: 700px;
+  margin: auto;
+  display: block;
+  background-color: #fff;
+  margin-top: 20px;
+  @include media('<=phone') {
+    width: 100%;
+  }
+}

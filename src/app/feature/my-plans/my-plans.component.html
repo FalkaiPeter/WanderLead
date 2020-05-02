@@ -1,0 +1,45 @@
+<mat-tab-group [dynamicHeight]="true" [animationDuration]="'0ms'">
+  <mat-tab label="Public">
+
+    <mat-accordion #acc [displayMode]="'flat'">
+      <mat-expansion-panel *ngFor="let plan of data.public" (afterExpand)="i.loadPlan(user.uid, plan.id)">
+
+        <mat-expansion-panel-header  >
+          <mat-panel-title>
+            {{plan.name}}
+          </mat-panel-title>
+          <mat-panel-description *ngIf="plan.start && plan.end">
+            {{plan.start}} - {{plan.end}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- CONTENT -->
+          <button mat-button (click)="navigate(i.plan, plan.id, true)">Edit Plan</button>
+          <app-plan #i></app-plan>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  </mat-tab>
+
+  <mat-tab label="Private">
+
+    <mat-accordion #acc [displayMode]="'flat'">
+      <mat-expansion-panel *ngFor="let plan of data.private" (afterExpand)="i.loadPlan(user.uid, plan.id, false)">
+
+        <mat-expansion-panel-header  >
+          <mat-panel-title>
+            {{plan.name}}
+          </mat-panel-title>
+          <mat-panel-description *ngIf="plan.start && plan.end">
+            {{plan.start}} - {{plan.end}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- CONTENT -->
+          <button mat-button (click)="navigate(i.plan, plan.id, false)">Edit Plan</button>
+          <app-plan #i></app-plan>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  </mat-tab>
+</mat-tab-group>

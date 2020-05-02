@@ -23,6 +23,7 @@
 
   <mat-menu #appMenu="matMenu" class="nav-dropdown-menu">
     <button mat-menu-item > <mat-icon>settings</mat-icon> Settings</button>
+    <button mat-menu-item [routerLink]="['/myplans']"> <mat-icon>outlined_flag</mat-icon> My plans </button>
     <button mat-menu-item (click)="authService.signOut()"> <mat-icon>exit_to_app</mat-icon> Logout </button>
   </mat-menu>
 
