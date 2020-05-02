@@ -3,9 +3,6 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ProfileStateModel } from '@wl-core/states/profile.state';
 import { WLPlan } from '../plan/plan.model';
-import { PlanService } from '../plan/plan.service';
-import { PlanComponent } from '../plan/plan.component';
-import { MatAccordion } from '@angular/material';
 import { WLProfileActions } from '@wl-core/actions/profile.actions';
 
 

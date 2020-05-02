@@ -20,10 +20,10 @@ export class PlanService {
     return plan.exists ? plan.data() as WLPlanTypes.DBmodel : null;
   }
 
-  async save(plan: WLPlanTypes.DBmodel, isPublic: boolean = true): Promise<string>{
+  async save(plan: WLPlanTypes.DBmodel, isPublic: boolean = true, id: string): Promise<string>{
     const user = this.store.selectSnapshot(CurrentUserState);
     const batch = this.afs.firestore.batch();
-    const planId = this.afs.createId();
+    const planId = id ? id : this.afs.createId();
 
     batch.set(
       this.afs.firestore
@@ -31,12 +31,22 @@ export class PlanService {
       .doc(planId)
       , plan
     );
-    if ( isPublic)
+    if ( isPublic){
       batch.update(
         this.afs.firestore
-        .doc(`Users/${user.uid}/other/public`)
-        , {plans: firestore.FieldValue.arrayUnion({name: plan.title, id: planId, start: plan.start, end: plan.end})}
+        .doc(`Users/${user.uid}/other/public`),
+        {plans: firestore.FieldValue.arrayUnion({name: plan.title, id: planId, start: plan.start, end: plan.end})}
       );
+      batch.update(
+        this.afs.firestore.doc(`Plans/${user.uid}`),
+        {public: firestore.FieldValue.arrayUnion({name: plan.title, id: planId, start: plan.start, end: plan.end})}
+      );
+    } else {
+      batch.update(
+        this.afs.firestore.doc(`Plans/${user.uid}`),
+        {private: firestore.FieldValue.arrayUnion({name: plan.title, id: planId, start: plan.start, end: plan.end})}
+      );
+    }
     return batch.commit().then(() => planId).catch((error) => {console.log(error); return null; });
 
 

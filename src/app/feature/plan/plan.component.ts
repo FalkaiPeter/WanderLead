@@ -30,6 +30,7 @@ export class PlanComponent implements OnInit {
   openedTab = 'places';
 
   constructor(public changeDetector: ChangeDetectorRef, private ps: PlanService) {
+
    }
 
   ngOnInit() {
@@ -55,7 +56,7 @@ export class PlanComponent implements OnInit {
 
     this.map.addListener('click', (event: any) => {
       event.stop();
-      if (event.placeId) {
+      if (event.placeId && this.editable) {
         this.placesService.getDetails(event, (place, status) => {
           if (status === 'OK') {
             this.marker.place = {
@@ -86,14 +87,14 @@ export class PlanComponent implements OnInit {
 
   trackby = (index: number, item) => item;
 
-  save(form: FormGroup) {
+  save(form: FormGroup, id: string = null) {
     this.plan.title = form.value.title;
     this.plan.start = form.value.start;
     this.plan.end = form.value.end;
     if (form.value.isPublic !== null) {
       this.plan.isPublic = form.value.isPublic;
     }
-    this.plan.save().then( result =>{
+    this.plan.save(id).then( result =>{
       this.placeGroup.placeGroups.forEach(() => this.placeGroup.deleteGroup(0));
       this.plan.placeGroups = this.placeGroup.placeGroups;
       this.priceGroup.priceGroups.forEach(() => this.priceGroup.deleteGroup(0));

@@ -24,7 +24,6 @@ export class AuthenticationService {
     const user = popup.user;
     if (popup.additionalUserInfo.isNewUser) {
       user.updateProfile({photoURL: this.basicPhotoURL});
-      console.log(user)
       this.addUserDataToDB(user.uid, user.displayName, user.email);
     }
     this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, displayName: user.displayName, photoURL: this.basicPhotoURL}));
@@ -61,10 +60,12 @@ export class AuthenticationService {
     const baseRef = this.db.doc(`Users/${uid}`);
     const publicRef = this.db.doc(`Users/${uid}/other/public`);
     const privateRef = this.db.doc(`Users/${uid}/other/private`);
+    const plansRef = this.db.doc(`Plans/${uid}`);
 
     batch.set(baseRef.ref, {uid, displayName, photoURL});
     batch.set(privateRef.ref, {uid, email});
     batch.set(publicRef.ref, {uid, displayName, photoURL, followers: 0, followings: 0, trips: 0, bio: '', plans: []});
+    batch.set(plansRef.ref, {public: [], private: []});
     return batch.commit().catch(error => console.log(error));
   }
 

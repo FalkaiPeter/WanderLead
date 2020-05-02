@@ -14,6 +14,7 @@ export class WLPlan {
   cofferGroups: WLTodoList[];
   start: Moment;
   end: Moment;
+  dbModel: WLPlanTypes.DBmodel;
 
   constructor(
     private planService: PlanService,
@@ -38,7 +39,7 @@ export class WLPlan {
       this.end = end;
   }
 
-  save() {
+  save(id: string = null) {
     const places = this.placeGroups.map(group => ({color: group.color, title: group.title, items: group.items.map(item => item.place)}));
     const todos: WLPlanTypes.Todo[] = this.todoGroups.map(group => ({title: group.title, items: group.items}));
     const coffer: WLPlanTypes.Todo[] = this.cofferGroups.map(group => ({title: group.title, items: group.items}));
@@ -54,18 +55,48 @@ export class WLPlan {
         start: this.start === null ? null : this.start.toISOString(),
         end: this.end === null ? null : this.end.toISOString()
       },
-      this.isPublic);
+      this.isPublic,
+      id);
   }
 
-  load(uid: string, planId: string, isPublic: boolean = true) {
+  clean() {
     this.placeGroups.forEach(group => {
       group.items.forEach(() => group.remove(0));
-    })
+    });
     this.placeGroups = [];
     this.priceGroups = [];
     this.todoGroups = [];
     this.cofferGroups = [];
+  }
+
+  loadFromDbModel(model: WLPlanTypes.DBmodel, isPublic: boolean = false) {
+    this.clean();
+
+    this.dbModel = model;
+    this.title = model.title;
+    this.end = moment(model.end);
+    this.start = moment(model.start);
+    model.prices.forEach(group => this.priceGroups.push(new WLPriceList(group.title, group.items)));
+    model.todos.forEach(group => this.todoGroups.push(new WLTodoList(group.title, group.items)));
+    model.coffer.forEach(group => this.cofferGroups.push(new WLTodoList(group.title, group.items)));
+    model.places.forEach(group => {
+        const g = new WLPLaceList(
+          group.title,
+          new google.maps.DistanceMatrixService(),
+          new google.maps.DirectionsRenderer({map: this._map, suppressMarkers: true}),
+          new google.maps.DirectionsService(),
+          group.color,
+        );
+        group.items.forEach(item => g.addPlace(item));
+        this.placeGroups.push(g);
+      });
+    this.isPublic = isPublic;
+  }
+
+  load(uid: string, planId: string, isPublic: boolean = true) {
+    this.clean();
     return this.planService.load(uid, planId, isPublic).then( result => {
+      this.dbModel = result;
       this.title = result.title;
       this.end = moment(result.end);
       this.start = moment(result.start);
