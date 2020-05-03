@@ -2,7 +2,7 @@
   <mat-tab label="Public">
 
     <mat-accordion #acc [displayMode]="'flat'">
-      <mat-expansion-panel *ngFor="let plan of data.public" (afterExpand)="i.loadPlan(user.uid, plan.id)">
+      <mat-expansion-panel *ngFor="let plan of data.public" (afterExpand)="pub.loadPlan(user.uid, plan.id)">
 
         <mat-expansion-panel-header  >
           <mat-panel-title>
@@ -13,8 +13,11 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- CONTENT -->
-          <button mat-button (click)="navigate(i.plan, plan.id, true)">Edit Plan</button>
-          <app-plan #i></app-plan>
+          <div class="actions">
+            <button mat-button (click)="navigate(pub.plan, plan.id, true)">Edit Plan</button>
+            <button mat-raides-button (click)="remove(pub.plan, plan.id, true)" color="warn">Delete Plan</button>
+          </div>
+          <app-plan #pub></app-plan>
 
       </mat-expansion-panel>
     </mat-accordion>
@@ -24,7 +27,7 @@
   <mat-tab label="Private">
 
     <mat-accordion #acc [displayMode]="'flat'">
-      <mat-expansion-panel *ngFor="let plan of data.private" (afterExpand)="i.loadPlan(user.uid, plan.id, false)">
+      <mat-expansion-panel *ngFor="let plan of data.private" (afterExpand)="priv.loadPlan(user.uid, plan.id, false)">
 
         <mat-expansion-panel-header  >
           <mat-panel-title>
@@ -35,8 +38,11 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- CONTENT -->
-          <button mat-button (click)="navigate(i.plan, plan.id, false)">Edit Plan</button>
-          <app-plan #i></app-plan>
+          <div class="actions">
+            <button mat-button (click)="navigate(priv.plan, plan.id, false)">Edit Plan</button>
+            <button mat-raised-button (click)="remove(priv.plan, plan.id, false)" color="warn">Delete Plan</button>
+          </div>
+          <app-plan #priv></app-plan>
 
       </mat-expansion-panel>
     </mat-accordion>

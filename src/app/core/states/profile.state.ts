@@ -71,6 +71,18 @@ export class ProfileState {
     state.patchState({...state, followings});
   }
 
+  @Action(WLProfileActions.AddPlan)
+  addPlan(state: StateContext<ProfileStateModel>, {id, name, start, end}: WLProfileActions.AddPlan) {
+    const plans = [state.getState().user.plans, {id, name, start, end}];
+
+    return state.patchState({...state, user: {...state.getState().user, plans: [...state.getState().user.plans, {id, name, start, end}]}});
+  }
+  @Action(WLProfileActions.RemovePlan)
+  removePlan(state: StateContext<ProfileStateModel>, {id}: WLProfileActions.RemovePlan) {
+    const plans = state.getState().user.plans.filter(plan => plan.id !== id);
+    return state.patchState({...state, user: {...state.getState().user, plans}});
+  }
+
 
 }
 
