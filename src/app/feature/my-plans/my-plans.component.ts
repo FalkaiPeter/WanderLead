@@ -6,7 +6,7 @@ import { WLPlan } from '../plan/plan.model';
 import { WLPlanTypes } from '../plan/plan-type';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { WlUser } from '@wl-core/models/user.model';
-import { firestore } from 'firebase';
+import { firestore } from 'firebase/app';
 import { WLProfileActions } from '@wl-core/actions/profile.actions';
 import { ProfileState } from '@wl-core/states/profile.state';
 
@@ -26,15 +26,13 @@ export class MyPlansComponent implements OnInit {
 
   ngOnInit() {
     this.data = this.ar.snapshot.data[0];
-    console.log(this.data)
-
   }
 
   navigate(plan: WLPlan, id: string, isPublic: boolean) {
     this.router.navigate(['planning', id], {state: {data: plan.dbModel, isPublic}});
   }
 
-  remove(plan: WLPlan, id: string, isPublic: boolean, index: number) {
+  remove(plan: WLPlan, id: string, isPublic: boolean) {
     const batch = this.afs.firestore.batch();
     batch.delete(this.afs.doc(`Plans/${this.user.uid}/${isPublic ? 'public' : 'private'}/${id}`).ref);
     if (isPublic) {
@@ -55,7 +53,6 @@ export class MyPlansComponent implements OnInit {
         {private: firestore.FieldValue.arrayRemove({id, name: plan.title, start: plan.start.toISOString(), end: plan.end.toISOString()})});
     }
     batch.commit();
-    console.log(this.data)
   }
 
 }

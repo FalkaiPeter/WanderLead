@@ -28,6 +28,5 @@ export class AppComponent implements OnInit {
   logData() {
     if(!window.performance.navigation.TYPE_RELOAD)
     navigator.sendBeacon('https://us-central1-wanderlead-fcd29.cloudfunctions.net/last_logout', this.store.snapshot().currentUser.uid);
-    console.log('asd')
   }
 }

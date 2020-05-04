@@ -31,7 +31,6 @@ export class AuthenticationService {
   }
 
   async signIn(data: any) {
-    console.log(data);
     const user = (await this.afauth.auth.signInWithEmailAndPassword(data.email, data.password)).user;
     this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, displayName: user.displayName, photoURL: user.photoURL}));
     this.router.navigate(['/home']);
