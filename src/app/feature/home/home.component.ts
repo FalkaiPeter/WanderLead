@@ -1,7 +1,7 @@
+
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, HostListener, } from '@angular/core';
 import { WLPost } from '../post/post.model';
 import { PostService } from '../post/post.service';
-
 
 
 @Component({
@@ -59,8 +59,5 @@ export class HomeComponent implements OnInit {
 
 
   }
-
-
-
 
 }

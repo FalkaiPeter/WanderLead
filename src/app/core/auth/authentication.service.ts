@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { auth, firestore } from 'firebase/app';
-import { NgForm } from '@angular/forms';
+import { auth } from 'firebase/app';
 import { Store } from '@ngxs/store';
 import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
 import { CurrentUserState } from '@wl-core/states/current-user.state';
 import { NotificationState } from '@wl-core/states/notifications.state';
-
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +27,7 @@ export class AuthenticationService {
     this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, displayName: user.displayName, photoURL: this.basicPhotoURL}));
     this.router.navigate(['/home']);
   }
+
 
   async signIn(data: any) {
     const user = (await this.afauth.auth.signInWithEmailAndPassword(data.email, data.password)).user;
