@@ -1,2 +1,10 @@
-
+<div class="container" (scroll)="onElementScroll($event)">
+  <app-post-creator></app-post-creator>
+  <span class="news">News</span>
+  <ng-container *ngIf="(likedPosts | async) as likes">
+    <app-post [post]="post" [liked]="likes.includes(post.id)" (likeEvent)="likeEventReciever($event)"*ngFor="let post of posts"></app-post>
+    <mat-divider></mat-divider>
+    <span class="no-more-posts" *ngIf="noMorePosts">There is no more post to load.</span>
+  </ng-container>
+</div>
 
