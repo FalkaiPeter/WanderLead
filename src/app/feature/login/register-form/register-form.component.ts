@@ -6,7 +6,7 @@ import {
   RepeatPasswordEStateMatcher,
   RepeatPasswordValidator } from '../form-validator';
 import { FormBuilder, FormControl, Validators, NgForm, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { auth } from 'firebase';
-import { NgForm } from '@angular/forms';
+import { auth } from 'firebase/app';
 import { Store } from '@ngxs/store';
 import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
 import { CurrentUserState } from '@wl-core/states/current-user.state';
@@ -29,8 +28,9 @@ export class AuthenticationService {
     this.router.navigate(['/home']);
   }
 
-  async signIn(data: NgForm) {
-    const user = (await this.afauth.auth.signInWithEmailAndPassword(data.value.email, data.value.password)).user;
+
+  async signIn(data: any) {
+    const user = (await this.afauth.auth.signInWithEmailAndPassword(data.email, data.password)).user;
     this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, displayName: user.displayName, photoURL: user.photoURL}));
     this.router.navigate(['/home']);
   }
@@ -59,11 +59,14 @@ export class AuthenticationService {
     const publicRef = this.db.doc(`Users/${uid}/other/public`);
     const privateRef = this.db.doc(`Users/${uid}/other/private`);
     const plansRef = this.db.doc(`Plans/${uid}`);
+    const followingRef = this.db.doc(`Users/${uid}/followings/idList`);
 
     batch.set(baseRef.ref, {uid, displayName, photoURL});
     batch.set(privateRef.ref, {uid, email});
     batch.set(publicRef.ref, {uid, displayName, photoURL, followers: 0, followings: 0, trips: 0, bio: '', plans: []});
     batch.set(plansRef.ref, {public: [], private: []});
+    batch.set(followingRef.ref, {idList: []});
+    batch.set(baseRef.collection('LikedPosts').doc(this.db.createId()).ref, {idList: []});
     return batch.commit().catch(error => console.log(error));
   }
 

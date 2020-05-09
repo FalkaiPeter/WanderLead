@@ -15,6 +15,7 @@ import { NotificationState } from './states/notifications.state';
 import { AgmCoreModule } from '@agm/core';
 import { SharedModule } from '@wl-shared/shared.module';
 import { NgAisModule } from 'angular-instantsearch';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 
 
@@ -31,6 +32,7 @@ import { NgAisModule } from 'angular-instantsearch';
     AngularFireAuthGuardModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AgmCoreModule.forRoot({apiKey: environment.firebaseConfig.apiKey}),
     SharedModule,
