@@ -29,22 +29,29 @@ export class UserService {
   follow( currentUser: WlUser.Min, user: WlUser.Min) {
     const batch = this.afs.firestore.batch();
     const followingRef = this.afs.firestore.doc(`Users/${currentUser.uid}/followings/${user.uid}`);
+    const followingidRef = this.afs.firestore.doc(`Users/${currentUser.uid}/followings/idList`);
     const followersRef = this.afs.firestore.doc(`Users/${user.uid}/followers/${currentUser.uid}`);
+    const followersidRef = this.afs.firestore.doc(`Users/${user.uid}/followers/idList`);
     const userPublicRef = this.afs.firestore.doc(`Users/${user.uid}/other/public`);
     const currentPublicRef = this.afs.firestore.doc(`Users/${currentUser.uid}/other/public`);
+
     const increment = firestore.FieldValue.increment(1);
 
     batch.set(followingRef, user);
     batch.set(followersRef, currentUser);
     batch.set(currentPublicRef, {followings: increment}, {merge: true});
     batch.set(userPublicRef, {followers: increment}, {merge: true});
+    batch.set(followingidRef, {idList: firestore.FieldValue.arrayUnion(user.uid)}, {merge: true});
+    batch.set(followersidRef, {idList: firestore.FieldValue.arrayUnion(currentUser.uid)}, {merge: true});
     return batch.commit().catch(error => console.log(error));
   }
 
   unfollow( currentUser: WlUser.Min, user: WlUser.Min) {
     const batch = this.afs.firestore.batch();
     const followingRef = this.afs.firestore.doc(`Users/${currentUser.uid}/followings/${user.uid}`);
+    const followingidRef = this.afs.firestore.doc(`Users/${currentUser.uid}/followings/idList`);
     const followersRef = this.afs.firestore.doc(`Users/${user.uid}/followers/${currentUser.uid}`);
+    const followersidRef = this.afs.firestore.doc(`Users/${user.uid}/followers/idList`);
     const userPublicRef = this.afs.firestore.doc(`Users/${user.uid}/other/public`);
     const currentPublicRef = this.afs.firestore.doc(`Users/${currentUser.uid}/other/public`);
     const decrement = firestore.FieldValue.increment(-1);
@@ -53,6 +60,8 @@ export class UserService {
     batch.delete(followersRef);
     batch.set(currentPublicRef, {followings: decrement}, {merge: true});
     batch.set(userPublicRef, {followers: decrement}, {merge: true});
+    batch.set(followingidRef, {idList: firestore.FieldValue.arrayRemove(user.uid)}, {merge: true});
+    batch.set(followersidRef, {idList: firestore.FieldValue.arrayRemove(currentUser.uid)}, {merge: true});
     return batch.commit().catch(error => console.log(error));
   }
 
