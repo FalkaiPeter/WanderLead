@@ -6,6 +6,10 @@
   display: block;
   background-color: #fff;
   margin-top: 20px;
+  .actions {
+    display: flex;
+    justify-content: space-between;
+  }
   @include media('<=phone') {
     width: 100%;
   }

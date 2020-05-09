@@ -36,4 +36,13 @@ export namespace WLProfileActions {
     static readonly type = '[profile] followings';
   }
 
+  export class AddPlan {
+    static readonly type = '[profile] addPlan';
+    constructor(public id: string, public name: string, public start: string, public end: string) {}
+  }
+  export class RemovePlan {
+    static readonly type = '[profile] removePlan';
+    constructor(public id: string) {}
+  }
+
 }

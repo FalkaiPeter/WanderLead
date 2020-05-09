@@ -12,6 +12,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { CurrentUserState } from './states/current-user.state';
 import { NotificationState } from './states/notifications.state';
 import { NgAisModule } from 'angular-instantsearch';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { NgAisModule } from 'angular-instantsearch';
     AngularFireAuthGuardModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     NgAisModule.forRoot(),
     NgxsModule.forRoot([CurrentUserState, NotificationState], { developmentMode: !environment.production }), // initial states

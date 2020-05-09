@@ -13,6 +13,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatCardModule } from '@angular/material/card';
+import {MatDividerModule} from '@angular/material/divider';
 
 
 
@@ -36,7 +38,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatDatepickerModule,
     MatTabsModule,
     MatExpansionModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatCardModule,
+    MatDividerModule
   ],
   exports: [
     MatIconModule,
@@ -51,7 +55,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatDatepickerModule,
     MatTabsModule,
     MatExpansionModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatCardModule,
+    MatDividerModule
   ]
 })
 export class MaterialModule { }

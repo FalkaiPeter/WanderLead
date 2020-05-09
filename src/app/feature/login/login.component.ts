@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 
 import { MyErrorStateMatcher } from './form-validator';
@@ -24,7 +24,6 @@ export class LoginComponent {
     const dialogRef = this.dialog.open(RegisterFormComponent, {panelClass: 'full-width-dialog'});
     dialogRef.afterClosed().subscribe((result: FormGroup) => {
       if (result !== undefined) {
-        console.log(`dialog data: ${result}`)
         this.authservice.signUp(result).catch((error) => {alert(error); });
       }
     });

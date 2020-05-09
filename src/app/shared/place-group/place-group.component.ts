@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } 
 import { WLPLaceList } from '@wl-core/models/list-types';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { WLValidators, WLErrorStateMatcher } from '@wl-core/validators';
 
 

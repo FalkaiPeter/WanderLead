@@ -1,0 +1,53 @@
+<mat-card [class.mat-elevation-z2]="true">
+
+  <mat-card-header>
+    <img mat-card-avatar src="{{post.author.photoURL}}">
+    <mat-card-title><span class="name text" [routerLink]="['/profile', post.author.uid]">{{post.author.displayName}}</span></mat-card-title>
+    <mat-card-subtitle>{{post.date.fromNow()}}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p>{{post.description}}</p>
+    <div class="imgs" *ngIf="post.photoURLs.length !== 0">
+      <img src="{{url}}" alt="" *ngFor="let url of post.photoURLs">
+    </div>
+  </mat-card-content>
+  <div class="actions">
+    <mat-icon (click)="likeChange(post)">{{liked? 'favorite' : 'favorite_border'}}</mat-icon>
+    <mat-icon (click)="openComments()">{{showComments ? 'chat_bubble' : 'chat_bubble_outline'}}</mat-icon>
+  </div>
+  <div class="comments" *ngIf="showComments">
+    <mat-divider></mat-divider>
+    <span class="no-comment" *ngIf="comments.length === 0">There is no comments yet.</span>
+    <div class="comment" *ngFor="let comment of comments">
+      <div class="header">
+        <img src="{{comment.author.photoURL}}" alt="">
+        <span class="name text" [routerLink]="['/profile', comment.author.uid]">{{comment.author.displayName}}</span>
+        <span class="date text">{{comment.date.fromNow()}}</span>
+      </div>
+      <div class="description">
+        <p>
+          {{comment.description}}
+        </p>
+      </div>
+    </div>
+    <span class="load-more" (click)="loadComment()">Show More</span>
+  </div>
+
+  <mat-divider></mat-divider>
+  <mat-card-footer>
+    <div class="add-comment">
+      <img src="{{user.photoURL}}" alt="">
+      <form #f="ngForm" (ngSubmit)="addComment(f)" >
+        <mat-form-field >
+          <textarea [mat-autosize]="true" #t (keyup.enter)="f.ngSubmit.emit();" (keydown.enter)="$event.preventDefault()" [matAutosizeMaxRows]="10"  ngModel name="description" matInput placeholder="Leave a comment"></textarea>
+        </mat-form-field>
+        <button mat-button type="submit">
+          <mat-icon >send</mat-icon>
+        </button>
+      </form>
+    </div>
+  </mat-card-footer>
+
+</mat-card>
+

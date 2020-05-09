@@ -57,7 +57,6 @@ export class PriceGroupComponent implements AfterViewInit {
     if (group)
       this.floatingPanel.group = group;
     this.floatingPanel.isOpen = true;
-    console.log(event)
   }
 
   addOrRename() {
