@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { auth } from 'firebase/app';
+import { auth, firestore } from 'firebase/app';
+import { NgForm, FormGroup } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
 import { CurrentUserState } from '@wl-core/states/current-user.state';
@@ -28,11 +29,18 @@ export class AuthenticationService {
     this.router.navigate(['/home']);
   }
 
-
-  async signIn(data: any) {
-    const user = (await this.afauth.auth.signInWithEmailAndPassword(data.email, data.password)).user;
-    this.store.dispatch(new CurrentUserActions.SetByModel({uid: user.uid, displayName: user.displayName, photoURL: user.photoURL}));
-    this.router.navigate(['/home']);
+  signIn(data: FormGroup) {
+    this.afauth.auth.signInWithEmailAndPassword(data.value.email, data.value.password).then(result =>{
+      this.store.dispatch(
+        new CurrentUserActions.SetByModel(
+          {uid: result.user.uid,
+            displayName: result.user.displayName,
+            photoURL: result.user.photoURL
+          })
+      );
+      this.router.navigate(['/home']);
+    })
+    .catch(error => alert('Wrong Eamil or Password'));
   }
 
   async signUp(data) {
