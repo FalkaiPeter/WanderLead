@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ChangeDetectionStrategy, AfterViewChecked, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { Store } from '@ngxs/store';
 import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
@@ -21,12 +21,8 @@ export class AppComponent implements OnInit {
     document.body.appendChild(DSLScript);
     document.body.removeChild(DSLScript);
   }
+
   ngOnInit(): void {
     this.store.dispatch(new CurrentUserActions.SetFromBackend());
-  }
-  @HostListener('window:unload')
-  logData() {
-    if(!window.performance.navigation.TYPE_RELOAD)
-    navigator.sendBeacon('https://us-central1-wanderlead-fcd29.cloudfunctions.net/last_logout', this.store.snapshot().currentUser.uid);
   }
 }

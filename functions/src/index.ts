@@ -38,13 +38,6 @@ exports.removeUserDataOnDelete = functions.auth.user().onDelete(async (user) => 
   return index.deleteObject(user.uid);
 });
 
-exports.lastLogout = functions.https.onRequest((req) => {
-
-  admin.firestore().doc(`LogoutLogs/${req.body}`).set({lastlogout: Date.now()})
-  .then( () => console.log(`${req.body} logged out! Timestamp saved to firestore`))
-  .catch(error => console.log(error));
-})
-
 
 
 
