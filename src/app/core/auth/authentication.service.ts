@@ -9,7 +9,6 @@ import { CurrentUserActions } from '@wl-core/actions/current-user.actions';
 import { CurrentUserState } from '@wl-core/states/current-user.state';
 import { NotificationState } from '@wl-core/states/notifications.state';
 
-
 @Injectable({
   providedIn: 'root'
 })

@@ -5,7 +5,6 @@ import { ProfileStateModel } from '@wl-core/states/profile.state';
 import { WLPlan } from '../plan/plan.model';
 import { WLProfileActions } from '@wl-core/actions/profile.actions';
 
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
