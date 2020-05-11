@@ -4,19 +4,19 @@
   <!-- TITLE -->
   <span class="title">SIGN IN</span>
 
-  <form (ngSubmit)="authservice.signIn(loginFormControl)" class="login-form">
+  <form (ngSubmit)="authservice.signIn(loginFormGroup)" (keypress.enter)="loginFormGroup.valid ? authservice.signIn(loginFormGroup) : null" [formGroup]="loginFormGroup" class="login-form">
 
 
     <!-- EMAIL -->
     <mat-form-field >
       <mat-label>Email</mat-label>
-      <input matInput name="email" type="email" [formControl]="loginFormControl" [errorStateMatcher]="matcher" placeholder="user@example.com">
+      <input matInput name="email" type="email" formControlName="email" [errorStateMatcher]="loginErrorStateMatcher" placeholder="user@example.com">
       <!-- ERROR HANDLER NOT VALID INPUT-->
-      <mat-error *ngIf="loginFormControl.hasError('email') && !loginFormControl.hasError('required')">
+      <mat-error *ngIf="loginFormGroup.get('email').errors?.email">
         Please enter a valid email address
       </mat-error>
       <!-- ERROR HANDLER REQUIRED -->
-      <mat-error *ngIf="loginFormControl.hasError('required')">
+      <mat-error *ngIf="loginFormGroup.get('email').errors?.required">
         Email is <strong>required</strong>
       </mat-error>
     </mat-form-field>
@@ -24,19 +24,19 @@
     <!-- PASSWORD -->
     <mat-form-field >
       <mat-label>Password</mat-label>
-      <input matInput [formControl]="loginFormControl" [errorStateMatcher]="matcher" type="password" placeholder="password">
+      <input matInput formControlName="password" [errorStateMatcher]="loginErrorStateMatcher" type="password" placeholder="password">
       <!-- ERROR HANDLER TOO SHORT PASSWORD -->
-      <mat-error *ngIf="loginFormControl.hasError('minLength') && !loginFormControl.hasError('required')">
+      <mat-error *ngIf="loginFormGroup.get('password').errors?.minlength">
         Password must at least 6 character
       </mat-error>
       <!-- ERROR HANDLER REQUIRED -->
-      <mat-error *ngIf="loginFormControl.hasError('required')">
+      <mat-error *ngIf="loginFormGroup.get('password').errors?.required">
         Email is <strong>required</strong>
       </mat-error>
     </mat-form-field>
 
     <!-- FORGOT PASSWORD -->
-    <span class="forgot-password">
+    <span  class="forgot-password">
       forgot
       <a href="">
         <strong>password</strong>
@@ -45,7 +45,7 @@
     </span>
 
     <!-- FORM SUBMIT BUTTON -->
-    <button type="submit" class="submit-button" mat-flat-button>Sign In</button>
+    <button type="submit" class="submit-button" [disabled]="!loginFormGroup.valid" mat-button>Sign In</button>
   </form>
 
   <!-- GOOGLE LOGIN -->

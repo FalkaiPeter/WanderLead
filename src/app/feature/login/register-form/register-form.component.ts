@@ -1,12 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
-import {
-  MyErrorStateMatcher,
-  EmailValidation,
-  PasswordValidation,
-  RepeatPasswordEStateMatcher,
-  RepeatPasswordValidator } from '../form-validator';
 import { FormBuilder, FormControl, Validators, NgForm, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { WLErrorStateMatcher, WLRepeatPasswordEStateMatcher, WLValidators, WLRepeatPasswordValidator } from '@wl-core/validators';
 
 
 
@@ -18,19 +13,19 @@ import { MatDialogRef } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterFormComponent implements OnInit {
-  matcher = new MyErrorStateMatcher();
-  passwordMatcher = new RepeatPasswordEStateMatcher;
+  matcher = new WLErrorStateMatcher();
+  passwordMatcher = new WLRepeatPasswordEStateMatcher();
   form: any;
 
   constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<RegisterFormComponent>) {
     this.form = this.formBuilder.group ( {
       firstname: new FormControl('', Validators.required),
       lastname: new FormControl('', Validators.required),
-      email: new FormControl('', EmailValidation),
-      password: new FormControl('', PasswordValidation),
+      email: new FormControl('', WLValidators.email),
+      password: new FormControl('', WLValidators.password),
       passwordAgain: new FormControl(''),
       acceptTerms: new FormControl('', [Validators.requiredTrue])
-    }, { validator: RepeatPasswordValidator });
+    }, { validator: WLRepeatPasswordValidator });
   }
 
   submitAccount(form: FormGroup){
