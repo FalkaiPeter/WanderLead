@@ -1,5 +1,5 @@
 import { ErrorStateMatcher } from '@angular/material/core';
-import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroupDirective, NgForm, Validators, FormGroup } from '@angular/forms';
 
 
 export class WLRepeatPasswordEStateMatcher implements ErrorStateMatcher {
@@ -8,9 +8,17 @@ export class WLRepeatPasswordEStateMatcher implements ErrorStateMatcher {
   }
 }
 
+
+/* REPEAT PASSWORD VALIDATOR */
+export function WLRepeatPasswordValidator(group: FormGroup) {
+  const password = group.controls.password.value;
+  const passwordConfirmation = group.controls.passwordAgain.value;
+  return password === passwordConfirmation ? null : { passwordsNotEqual: true }
+}
+
 export namespace WLValidators {
   export const name = [Validators.required, Validators.maxLength(24), Validators.minLength(2)];
-  export const password = [Validators.required, Validators.maxLength(24), Validators.minLength(2)];
+  export const password = [Validators.required, Validators.minLength(6)];
   export const email = [Validators.required, Validators.email];
 
 }

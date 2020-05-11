@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
-
-import { MyErrorStateMatcher } from './form-validator';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from '@wl-core/auth/authentication.service';
 import { RegisterFormComponent } from './register-form/register-form.component';
+import { WLValidators, WLErrorStateMatcher } from '@wl-core/validators';
 
 
 
@@ -14,11 +13,17 @@ import { RegisterFormComponent } from './register-form/register-form.component';
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent {
-  matcher = new MyErrorStateMatcher();
-  loginFormControl = new FormControl('', [Validators.required, Validators.email, Validators.minLength(6)]);
+export class LoginComponent implements OnInit{
+  loginErrorStateMatcher = new WLErrorStateMatcher();
+  loginFormGroup: FormGroup;
 
-  constructor(public authservice: AuthenticationService, public dialog: MatDialog) { }
+  constructor(public authservice: AuthenticationService, public dialog: MatDialog, private fb: FormBuilder) { }
+  ngOnInit(): void {
+    this.loginFormGroup = this.fb.group({
+      email: new FormControl('', WLValidators.email),
+      password: new FormControl('', WLValidators.password),
+    })
+  }
 
   openDialog(){
     const dialogRef = this.dialog.open(RegisterFormComponent, {panelClass: 'full-width-dialog'});
