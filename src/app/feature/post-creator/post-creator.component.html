@@ -4,13 +4,25 @@
   </mat-card-header>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <form #f="ngForm" (ngSubmit)="createPost(f)">
-      <mat-form-field>
-        <textarea [mat-autosize]="true" matInput type="text" name="description" [matAutosizeMaxRows]="10" matInput ngModel placeholder="Post something..."></textarea>
-      </mat-form-field>
-      <button mat-button type="submit" [disabled]="!f.value.description">
-        <mat-icon>send</mat-icon>
-      </button>
-    </form>
+    <app-image-uploader (allTaskCompleted)="downloadURLs = $event">
+      <form #f="ngForm" (ngSubmit)="createPost(f)">
+        <mat-form-field>
+          <textarea [mat-autosize]="true"
+            matInput
+            type="text"
+            name="description"
+            (focus)="hideOnClickOutside()"
+            [matAutosizeMaxRows]="10"
+            matInput
+            ngModel
+            placeholder="Post something...">
+          </textarea>
+        </mat-form-field>
+        <button mat-button type="submit" [disabled]="!f.value.description && !downloadURLs">
+          <mat-icon>send</mat-icon>
+        </button>
+      </form>
+    </app-image-uploader>
+
   </mat-card-content>
 </mat-card>

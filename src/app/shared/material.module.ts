@@ -15,6 +15,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatCardModule } from '@angular/material/card';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -40,7 +42,9 @@ import {MatDividerModule} from '@angular/material/divider';
     MatExpansionModule,
     MatMomentDateModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
   ],
   exports: [
     MatIconModule,
@@ -57,7 +61,9 @@ import {MatDividerModule} from '@angular/material/divider';
     MatExpansionModule,
     MatMomentDateModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
   ]
 })
 export class MaterialModule { }

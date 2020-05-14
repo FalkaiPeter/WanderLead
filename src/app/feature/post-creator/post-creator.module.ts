@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PostCreatorComponent } from './post-creator.component';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '@wl-shared/material.module';
+import { ImageUploaderComponent } from '../image-uploader/image-uploader.component';
+import { ImageUploaderModule } from '../image-uploader/image-uploader.module';
 
 
 
@@ -11,7 +13,8 @@ import { MaterialModule } from '@wl-shared/material.module';
   imports: [
     CommonModule,
     FormsModule,
-    MaterialModule
+    ImageUploaderModule,
+    MaterialModule,
   ],
   exports: [
     PostCreatorComponent
