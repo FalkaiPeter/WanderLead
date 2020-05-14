@@ -7,6 +7,7 @@ import { NgxsModule } from '@ngxs/store';
 import { ProfileState } from '@wl-core/states/profile.state';
 import { SharedModule } from '@wl-shared/shared.module';
 import { PlanModule } from '../plan/plan.module';
+import { PostModule } from '../post/post.module';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { PlanModule } from '../plan/plan.module';
     ProfileRoutingModule,
     SharedModule,
     PlanModule,
+    PostModule
   ]
 })
 export class ProfileModule { }
