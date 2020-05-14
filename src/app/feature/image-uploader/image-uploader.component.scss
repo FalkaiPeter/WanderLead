@@ -1,0 +1,46 @@
+@import '../../../theme/wl-breakpoints';
+@import '../../../theme/wl-colors';
+:host {
+  transition: all .3s;
+}
+.file-input {
+  min-height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+
+  .header {
+    display: block;
+    width: 100%;
+    button {
+      color: #fff;
+      background-color: $wl-primary;
+      &:hover{
+        background-color: $wl-primary-dark;
+      }
+    }
+    .text {
+      margin-left: 10px;
+      opacity: .5;
+    }
+  }
+  app-upload-task {
+    flex: 1 1 auto;
+    width: 25%;
+    border: 2px solid #fff;
+    box-sizing: border-box;
+    @include media('<=phone') {
+      width: 50%;
+    }
+  }
+}
+.hovering>.file-input {
+  background-color:#f5f5f5;
+  .header>.text {
+    color: $wl-primary-dark
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+

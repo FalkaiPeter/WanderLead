@@ -1,0 +1,10 @@
+<div *ngIf="percentage | async as pct " class="container" >
+  <mat-progress-spinner *ngIf="pct !== 100" class="progress-spinner" [diameter]="150"  [value]="pct">
+  </mat-progress-spinner>
+  <span *ngIf="pct !== 100" class="progress-text">{{(pct / 100) | percent}}</span>
+  <div *ngIf="snapshot | async as snap" class="image-container" [class.uploaded]="pct === 100">
+    <img *ngIf="downloadURL as url"[src]="url">
+    <span class="file-name">{{file.name | slice:0:12}}...</span>
+  </div>
+  <mat-icon *ngIf="pct === 100" id="deleteTask" (click)="deleteUploadedFile()">close</mat-icon>
+</div>
