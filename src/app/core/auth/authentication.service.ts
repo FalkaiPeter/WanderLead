@@ -54,10 +54,8 @@ export class AuthenticationService {
   }
 
   signOut(){
-    navigator.sendBeacon('https://us-central1-wanderlead-fcd29.cloudfunctions.net/last_logout', this.store.snapshot().currentUser.uid);
     this.store.reset([CurrentUserState, NotificationState]);
-    this.afauth.auth.signOut();
-    this.router.navigate(['/login']);
+    this.afauth.auth.signOut().then(() => location.reload());
   }
 
   addUserDataToDB(uid: string, displayName: string, email: string){
@@ -68,12 +66,14 @@ export class AuthenticationService {
     const privateRef = this.db.doc(`Users/${uid}/other/private`);
     const plansRef = this.db.doc(`Plans/${uid}`);
     const followingRef = this.db.doc(`Users/${uid}/followings/idList`);
+    const followersRef = this.db.doc(`Users/${uid}/followers/idList`);
 
     batch.set(baseRef.ref, {uid, displayName, photoURL});
     batch.set(privateRef.ref, {uid, email});
     batch.set(publicRef.ref, {uid, displayName, photoURL, followers: 0, followings: 0, trips: 0, bio: '', plans: []});
     batch.set(plansRef.ref, {public: [], private: []});
     batch.set(followingRef.ref, {idList: []});
+    batch.set(followersRef.ref, {idList: []});
     batch.set(baseRef.collection('LikedPosts').doc(this.db.createId()).ref, {idList: []});
     return batch.commit().catch(error => console.log(error));
   }

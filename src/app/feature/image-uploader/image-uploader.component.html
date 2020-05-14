@@ -1,0 +1,18 @@
+<div
+  class="dropzone"
+  dropzone
+  (hovered)="toggleHover($event)"
+  (dropped)="onDrop($event)"
+  [class.hovering]="isHovering"
+>
+  <ng-content></ng-content>
+  <div class="file-input" [hidden]="!show">
+    <div class="header">
+      <button  mat-button (click)="i.click()">Choose files</button>
+      <span class="text">or simply just Drop your images</span>
+    </div>
+    <app-upload-task [file]="file" (remove)="removeUploadedImage($event)" (uploaded)="taskCompleted($event)" *ngFor="let file of files; trackBy: trackByfnc"></app-upload-task>
+  </div>
+  <input #i hidden="hidden" type="file" multiple (change)="onDrop($event.target.files)">
+
+</div>

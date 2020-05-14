@@ -1,78 +1,109 @@
 @import '../../../theme/wl-breakpoints';
 @import '../../../theme/wl-colors';
-:host {
-  display: block;
-  width: 700px;
-  margin: auto;
-  margin-top: 20px;
-  .profile-data-container {
-    border: 2px  solid #fff;
-    box-sizing: border-box;
-    .map {
-      height: 400px;
-    }
-    .profile{
-      position: relative;
-      display: flex;
-      img {
-        position: absolute;
-        height: 120px;
-        width: 120px;
-        bottom: 10px;
-        left: 10px;
-        border-radius: 50%;
-        border: 3px solid #fff;
-        cursor: pointer;
-        &:hover{
-          border: 3px solid $wl-primary;
-          transition-duration: 300ms;
-        }
 
+:host {
+  max-height: 100%;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  display: block;
+  width: 100%;
+  .container{
+    display: block;
+    width: 700px;
+    margin: auto;
+    margin-top: 10px;
+    height: 100%;
+    @include media('<=phone') {
+      width: 100%;
+    }
+    .news{
+      display: block;
+      padding: 20px 0;
+      font-size: 20px;
+      color: rgba($color: #000000, $alpha: .4);
+      text-align: center;
+    }.profile-data-container {
+      border: 2px  solid #fff;
+      box-sizing: border-box;
+      .map {
+        height: 400px;
       }
-      .data {
-        flex: 1 1 auto;
-        background-color: #ffffff;
-        ul {
-          padding-left: 150px;
-          display: flex;
-          align-items: center;
-          list-style: none;
-          .stats {
-            text-align: center;
-            flex: 1 1 auto;
-            cursor: pointer;
-            color: rgba($color: #000000, $alpha: .5);
-            &:hover {
-              color: #000;
+      .profile{
+        position: relative;
+        display: flex;
+        img {
+          position: absolute;
+          height: 120px;
+          width: 120px;
+          bottom: 10px;
+          left: 10px;
+          border-radius: 50%;
+          border: 3px solid #fff;
+          cursor: pointer;
+          &:hover{
+            border: 3px solid $wl-primary;
+            transition-duration: 300ms;
+          }
+
+        }
+        .data {
+          flex: 1 1 auto;
+          background-color: #ffffff;
+          ul {
+            padding-left: 150px;
+            display: flex;
+            align-items: center;
+            list-style: none;
+            .stats {
+              text-align: center;
+              flex: 1 1 auto;
+              cursor: pointer;
+              color: rgba($color: #000000, $alpha: .5);
+              &:hover {
+                color: #000;
+              }
+            }
+            .name {
+              flex: 1 1 auto;
+              font-size: 18px;
+              font-weight: 500;
+            }
+            .follow-btn {
+              background-color: $wl-primary;
+              color: #fff;
+              margin-right: 16px;
             }
           }
-          .name {
-            flex: 1 1 auto;
-            font-size: 18px;
-            font-weight: 500;
-          }
-          .follow-btn {
-            background-color: $wl-primary;
-            color: #fff;
-            margin-right: 16px;
-          }
         }
       }
     }
+    .actions {
+      margin-top: 20px;
+      background-color: #fff !important;
+    }
+    .no-more-posts{
+      display: block;
+      padding: 20px;
+      font-size: 30px;
+      color: rgba($color: #000000, $alpha: .4);
+      text-align: center;
+    }
   }
+  &::-webkit-scrollbar{
+    width: 0.4rem;
+  }
+  &::-webkit-scrollbar-track{
+    background: map-get($map: $wl-primary-palette, $key: 100);
 
-
-  .actions {
-    margin-top: 20px;
-    background-color: #fff !important;
+  }
+  &::-webkit-scrollbar-thumb{
+    background: map-get($map: $wl-primary-palette, $key: 700);
+    margin: auto;
+    border-radius: 0.2rem;
   }
 }
 
 @include media('<=phone') {
-  :host {
-    width: 100%;
-    margin: 0;
-  }
   .profile-data-container {
     border: 2px  solid #fff;
     box-sizing: border-box;

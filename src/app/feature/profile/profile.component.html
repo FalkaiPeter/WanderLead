@@ -1,45 +1,55 @@
-<div class="profile-data-container">
-  <div class="map" #mapRef></div>
-  <ng-container *ngIf="(profile$ | async) as profile">
-    <div class="profile" *ngIf="profile.user !== null">
-      <img src="{{profile.user.photoURL}}" alt="profile-photo" class="photo">
-      <div class="data">
-        <ul>
-          <li class="name">{{profile.user.displayName}}</li>
-          <li class="stats">followers<br>{{profile.user.followers}}</li>
-          <li class="stats">followings<br>{{profile.user.followings}}</li>
-          <li class="stats">trips<br>{{profile.user.trips}}</li>
-          <li *ngIf="profile.followed !== null"><button mat-button class="follow-btn" (click)="profile.followed ? unfollow() : follow()">{{ profile.followed ? 'Unfollow' : 'Follow'}}</button></li>
-        </ul>
+<div class="container"(scroll)="onElementScroll($event)">
+
+  <div class="profile-data-container">
+    <div class="map" #mapRef></div>
+    <ng-container *ngIf="(profile$ | async) as profile">
+      <div class="profile" *ngIf="profile.user !== null">
+        <img src="{{profile.user.photoURL}}" alt="profile-photo" class="photo">
+        <div class="data">
+          <ul>
+            <li class="name">{{profile.user.displayName}}</li>
+            <li class="stats">followers<br>{{profile.user.followers}}</li>
+            <li class="stats">followings<br>{{profile.user.followings}}</li>
+            <li class="stats">trips<br>{{profile.user.trips}}</li>
+            <li *ngIf="profile.followed !== null"><button mat-button class="follow-btn" (click)="profile.followed ? unfollow() : follow()">{{ profile.followed ? 'Unfollow' : 'Follow'}}</button></li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </ng-container>
+  </div>
+
+  <div class="actions" *ngIf="(profile$ | async).user as user">
+    <mat-tab-group [dynamicHeight]="true" [animationDuration]="'0ms'">
+      <mat-tab label="Bio"> {{user.bio}} </mat-tab>
+      <mat-tab label="Plans">
+
+        <mat-accordion #acc [displayMode]="'flat'">
+          <mat-expansion-panel *ngFor="let plan of user.plans" (afterExpand)="i.loadPlan(user.uid, plan.id)">
+
+            <mat-expansion-panel-header  >
+              <mat-panel-title>
+                {{plan.name}}
+              </mat-panel-title>
+              <mat-panel-description *ngIf="plan.start && plan.end">
+                {{plan.start}} - {{plan.end}}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <!-- CONTENT -->
+              <app-plan #i></app-plan>
+
+          </mat-expansion-panel>
+        </mat-accordion>
+
+      </mat-tab>
+      <mat-tab label="Trips" [disabled]="true"> Content 3 </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <span class="news">Posts</span>
+  <ng-container *ngIf="(likedPosts | async) as likes">
+    <app-post [post]="post" [liked]="likes.includes(post.id)" (likeEvent)="likeEventReciever($event)"*ngFor="let post of posts"></app-post>
+    <mat-divider></mat-divider>
+    <span class="no-more-posts" *ngIf="noMorePosts">There is no more post to load.</span>
   </ng-container>
-</div>
-
-<div class="actions" *ngIf="(profile$ | async).user as user">
-  <mat-tab-group [dynamicHeight]="true" [animationDuration]="'0ms'">
-    <mat-tab label="Bio"> {{user.bio}} </mat-tab>
-    <mat-tab label="Plans">
-
-      <mat-accordion #acc [displayMode]="'flat'">
-        <mat-expansion-panel *ngFor="let plan of user.plans" (afterExpand)="i.loadPlan(user.uid, plan.id)">
-
-          <mat-expansion-panel-header  >
-            <mat-panel-title>
-              {{plan.name}}
-            </mat-panel-title>
-            <mat-panel-description *ngIf="plan.start && plan.end">
-              {{plan.start}} - {{plan.end}}
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <!-- CONTENT -->
-            <app-plan #i></app-plan>
-
-        </mat-expansion-panel>
-      </mat-accordion>
-
-    </mat-tab>
-    <mat-tab label="Trips" [disabled]="true"> Content 3 </mat-tab>
-  </mat-tab-group>
 </div>
 

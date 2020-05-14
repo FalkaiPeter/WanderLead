@@ -7,6 +7,8 @@ import { CurrentUserState } from '@wl-core/states/current-user.state';
 import { firestore } from 'firebase/app';
 import * as moment from 'moment';
 import { from } from 'rxjs';
+import { ProfileState } from '@wl-core/states/profile.state';
+import { takeLast, take, takeUntil, map, switchMap } from 'rxjs/operators';
 
 
 
@@ -51,6 +53,15 @@ export class PostService {
       () => console.log('Post published sucessfully!'),
       error => console.log('Something went wrong! ' + error)
     );
+  }
+
+  loadUserPosts(uid: string, last: any) {
+    return this.afs.firestore.collection('Posts')
+      .where('author.uid', '==', uid)
+      .orderBy('date', 'desc')
+      .startAfter(last)
+      .limit(10)
+      .get().then(coll => coll.docs);
   }
 
   addComment(comment: WLComment, post: WLPost) {
