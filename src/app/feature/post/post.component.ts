@@ -78,7 +78,6 @@ export class PostComponent implements OnInit {
       };
     }));
     this.changeDetector.detectChanges();
-    console.log(this.last);
   }
 
 }
