@@ -1,3 +1,8 @@
+# Nem használt git repo, a projekthez tartozó kódbázis át került organisationbe privát multirepo struktúrába a jobb organizáció, environments fileok és egyszerűbb verziókövetés miatt.
+
+
+
+
 # WanderLead
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.25.
